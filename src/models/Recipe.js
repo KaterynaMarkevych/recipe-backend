@@ -44,9 +44,9 @@ const RecipeSchema = new mongoose.Schema({
     ],
   },
   diet: {
-    type: [String], // робимо поле масивом рядків
+    type: [String], // поле масивом рядків
     enum: ["Вегетеріанська", "Веганська", "Безглютенова", "Безлактозна"], // можливі значення
-    default: [], // за замовчуванням порожній масив
+    default: [],
   },
   cookingTime: { type: String },
   difficulty: {
@@ -66,4 +66,6 @@ const RecipeSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.models.Recipe || mongoose.model("Recipe", RecipeSchema);
+const Recipe = mongoose.models.Recipe || mongoose.model("Recipe", RecipeSchema);
+
+export default Recipe;
