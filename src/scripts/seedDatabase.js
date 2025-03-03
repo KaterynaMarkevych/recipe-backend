@@ -60,6 +60,7 @@ const seedDatabase = async () => {
     const recipes = [
       {
         title: "Буряковий борщ",
+        image: "/uploads/popular_recipe1.jpg",
         description: "Смачний український борщ з м’ясом і овочами.",
         ingredients: [
           "2шт буряк",
@@ -95,6 +96,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Плов",
+        image: "/uploads/popular_recipe2.jpg",
         description: "Традиційний узбецький плов з рисом і м’ясом.",
         ingredients: [
           "500г рис довгозернистий",
@@ -131,6 +133,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Вареники з картоплею",
+        image: "/uploads/popular_recipe3.jpg",
         description: "Смачні вареники з картоплею та підсмаженою цибулею.",
         ingredients: [
           "500г борошно",
@@ -165,6 +168,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Олів’є",
+        image: "/uploads/popular_recipe.4jpg",
         ingredients: [
           "3 шт картопля",
           "2 шт морква",
@@ -201,6 +205,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Салат Цезар",
+        image: "/uploads/popular_recipe5.jpg",
         ingredients: [
           "300 г куряче філе",
           "1 пучок листя салату",
@@ -239,6 +244,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Піца Маргарита",
+        image: "/uploads/popular_recipe6.jpg",
         ingredients: [
           "250 г борошно",
           "7 г сухі дріжді",
@@ -277,6 +283,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Томатний суп",
+        image: "/uploads/popular_recipe8.jpg",
         cookingTime: "40 хвилин",
         portions: "4",
         ingredients: [
@@ -317,6 +324,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Шашлик",
+        image: "/uploads/popular_recipe9.jpg",
         cookingTime: " 4,5 годиин",
         portions: "6",
         ingredients: [
@@ -358,6 +366,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Капусняк",
+        image: "/uploads/popular_recipe10.jpg",
         cookingTime: " 2 годиин",
         portions: "4-6",
         ingredients: [
@@ -397,6 +406,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Сирники",
+        image: "/uploads/popular_recipe11.jpg",
         cookingTime: " 20 хвилин",
         ingredients: [
           "250 г сиру",
@@ -434,6 +444,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Смажені баклажани з часником і зеленню",
+        image: "/uploads/popular_recipe12.jpg",
         ingredients: [
           "3 шт. баклажани",
           "3 зубчики часнику",
@@ -469,6 +480,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Різотто",
+        image: "/uploads/popular_recipe13.jpg",
         ingredients: [
           "200 г рису арборіо",
           "200 г печерець",
@@ -513,6 +525,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Млинці",
+        image: "/uploads/popular_recipe14.jpg",
         ingredients: [
           "200 г борошна",
           "2 шт. яйця",
@@ -547,6 +560,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Бісквітний торт",
+        image: "/uploads/popular_recipe15.jpg",
         ingredients: [
           "200 г борошна",
           "200 г цукру",
