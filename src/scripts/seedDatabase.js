@@ -168,7 +168,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Олів’є",
-        image: "/uploads/popular_recipe.4jpg",
+        image: "/uploads/popular_recipe4.jpg",
         ingredients: [
           "3 шт картопля",
           "2 шт морква",
