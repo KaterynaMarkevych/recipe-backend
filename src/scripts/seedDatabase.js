@@ -48,11 +48,7 @@ const seedDatabase = async () => {
       following: Math.floor(Math.random() * 80) + 1,
       registeredAt: faker.date.past(),
     }));
-    // Функція для отримання URL зображення
-    /*function getImageUrl(avatarId) {
-      return `https://res.cloudinary.com/dz1kvzidt/image/upload/c_fill,h_150,w_150/${avatarId}`;
-    }*/
-    //пофіксити авторів
+
     await User.insertMany(users); //додавання в базу даних
     console.log("Збережені користувачі:", users);
     console.log("ID першого користувача:", users[0]?._id);
@@ -82,7 +78,7 @@ const seedDatabase = async () => {
         type: "Супи",
         cuisine: "Українська",
         diet: "Безглютенова",
-        cookingTime: "від 30 хвилин до 1 години",
+        cookingTime: 60,
         difficulty: "Середньо",
         nutrition: {
           calories: 151,
@@ -119,7 +115,7 @@ const seedDatabase = async () => {
         type: "Основні страви",
         cuisine: "",
         diet: "Безглютенова",
-        cookingTime: "від 1 години до 1 години 30 хвилин",
+        cookingTime: 90,
         difficulty: "Складно",
         nutrition: {
           calories: 480,
@@ -154,7 +150,7 @@ const seedDatabase = async () => {
         type: "Обід",
         cuisine: "Українська",
         diet: "Веганська",
-        cookingTime: "55 хвилин",
+        cookingTime: 55,
         difficulty: "Середньо",
         nutrition: {
           calories: 350,
@@ -181,7 +177,7 @@ const seedDatabase = async () => {
         ],
         type: "Салати та закуски",
         rating: 4.6,
-        cookingTime: "50 хвилин",
+        cookingTime: 50,
         portions: "6-8",
         description: "Класичний новорічний салат Олів’є.",
         difficulty: "Легко",
@@ -220,7 +216,7 @@ const seedDatabase = async () => {
         ],
         type: "Салати та закуски",
         rating: 4.7,
-        cookingTime: "40 хвилин",
+        cookingTime: 40,
         portions: "6-8",
         description: "Популярний салат з куркою, сиром і спеціальним соусом.",
         cuisine: "Італійська",
@@ -257,7 +253,7 @@ const seedDatabase = async () => {
           "оливкова олія",
         ],
         rating: 4.9,
-        cookingTime: "40 хвилин",
+        cookingTime: 40,
         portions: "1",
         description: "Класична італійська піца з томатами і моцарелою.",
         difficulty: "Середньо",
@@ -284,7 +280,7 @@ const seedDatabase = async () => {
       {
         title: "Томатний суп",
         image: "/uploads/popular_recipe8.jpg",
-        cookingTime: "40 хвилин",
+        cookingTime: 40,
         portions: "4",
         ingredients: [
           "8 шт. помідори",
@@ -325,7 +321,7 @@ const seedDatabase = async () => {
       {
         title: "Шашлик",
         image: "/uploads/popular_recipe9.jpg",
-        cookingTime: " 4,5 годиин",
+        cookingTime: 270,
         portions: "6",
         ingredients: [
           "2 кг свинина",
@@ -367,7 +363,7 @@ const seedDatabase = async () => {
       {
         title: "Капусняк",
         image: "/uploads/popular_recipe10.jpg",
-        cookingTime: " 2 годиин",
+        cookingTime: 120,
         portions: "4-6",
         ingredients: [
           "500 г свинина",
@@ -407,7 +403,7 @@ const seedDatabase = async () => {
       {
         title: "Сирники",
         image: "/uploads/popular_recipe11.jpg",
-        cookingTime: " 20 хвилин",
+        cookingTime: 20,
         ingredients: [
           "250 г сиру",
           "3 ст. л. борошна",
@@ -454,7 +450,7 @@ const seedDatabase = async () => {
           "зелень",
         ],
         type: "Салати та закуски",
-        cookingTime: "30 хвилин",
+        cookingTime: 30,
         rating: 4.3,
         description: "Смажені баклажани з часником і зеленню",
         diet: "Вегетеріанська",
@@ -496,7 +492,7 @@ const seedDatabase = async () => {
           "чорний перець",
         ],
         type: "Основні страви",
-        cookingTime: "30-40 хвилин",
+        cookingTime: 40,
         rating: 4.7,
         description: "Італійське різотто з вершковим смаком і грибами.",
         difficulty: "Середньо",
@@ -536,7 +532,7 @@ const seedDatabase = async () => {
           "1 ст. л. вершкового масла",
         ],
         type: "Десерти",
-        cookingTime: "20 хвилин",
+        cookingTime: 20,
         rating: 4.6,
         description: "Домашні млинці, які ідеально підходять для сніданку.",
         diet: "Вегетеріанська",
@@ -576,7 +572,7 @@ const seedDatabase = async () => {
           "50 г вершкового масла (для глазурі)",
         ],
         type: "Десерти",
-        cookingTime: "1 год 15 хв ",
+        cookingTime: 75,
         rating: 4.8,
         description: "Ніжний бісквітний торт з легкою текстурою.",
         diet: "Вегетеріанська",

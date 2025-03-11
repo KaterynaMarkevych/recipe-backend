@@ -49,7 +49,7 @@ const RecipeSchema = new mongoose.Schema({
     enum: ["Вегетеріанська", "Веганська", "Безглютенова", "Безлактозна"], // можливі значення
     default: [],
   },
-  cookingTime: { type: String },
+  cookingTime: { type: Number, required: true },
   difficulty: {
     type: String,
     enum: ["Легко", "Середньо", "Складно"],
