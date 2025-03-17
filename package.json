@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -9,6 +10,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.5.0",
+    "cloudinary": "^2.5.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "faker": "^5.5.3",
     "mongoose": "^8.10.1",
     "next": "15.1.7",
     "react": "^19.0.0",
