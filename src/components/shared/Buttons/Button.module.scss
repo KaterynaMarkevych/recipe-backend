@@ -1,0 +1,41 @@
+.button {
+  min-width: 125px;
+  min-height: 44px;
+  padding: 10px 16px 10px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 400;
+  &:disabled {
+    cursor: not-allowed;
+    background: #f9fafb;
+    color: #d2d6db;
+    border: 1px solid #d2d6db;
+  }
+  &:active {
+    border: none;
+  }
+}
+.primary {
+  background: #d6e6f2;
+  text-align: center;
+  border: 1px solid #000;
+  &:hover {
+    background: #b9d7ea;
+    border: 1px solid #000;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    border: none;
+  }
+}
+.normall {
+  width: 108px;
+  height: 38px;
+}
+.medium {
+  width: 156px;
+  height: 38px;
+}
