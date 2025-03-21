@@ -66,7 +66,6 @@ const Header = () => {
             <div className={styles.CTA}>
               <Button onClick={() => setShowLoginForm(true)}>Увійти</Button>
               <Button
-                size="medium"
                 onClick={() => router.push("/add-recipe")}
                 className={styles.addRecipe}
               >

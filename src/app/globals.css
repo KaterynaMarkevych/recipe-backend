@@ -19,3 +19,8 @@ body {
   background: var(--background);
   font-family: "Montserrat", sans-serif;
 }
+
+span {
+  font-family: "Buenard", serif;
+  font-weight: 400;
+}

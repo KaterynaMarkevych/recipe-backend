@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import styles from "./HeroSection.module.scss";
 import photo1 from "../../../../public/hero-section-images/picture1.svg";
@@ -15,10 +13,10 @@ const HeroSection = () => {
         Знаходь рецепти своїх улюблених страв
       </h1>
       <div className={styles.backgroundHero}>
-        <p className={styles.heroText}>
+        <span className={styles.heroText}>
           Не знаєш що приготувати? Шукай рецепти з продуктів, які вже є у твоєму
           холодильнику!
-        </p>
+        </span>
         <div className={styles.photoContainer}>
           <Image src={photo1} alt="Photo1" className={styles.photo1} />
           <Image
@@ -30,7 +28,9 @@ const HeroSection = () => {
           <Image src={photo3} alt="Photo3" className={styles.photo3} />
           <Image src={photo4} alt="Photo4" className={styles.photo4} />
         </div>
-        <p className={styles.heroText2}>Використовуй пошук за інгредієнтами</p>
+        <span className={styles.heroText2}>
+          Використовуй пошук за інгредієнтами
+        </span>
       </div>
       <hr className={styles.line} />
     </div>

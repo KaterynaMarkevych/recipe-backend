@@ -1,11 +1,10 @@
 .button {
-  min-width: 125px;
-  min-height: 44px;
-  padding: 10px 16px 10px 16px;
   border-radius: 15px;
   cursor: pointer;
   text-align: center;
-  font-weight: 400;
+  width: auto;
+  white-space: nowrap;
+  padding: 6px 12px;
   &:disabled {
     cursor: not-allowed;
     background: #f9fafb;
@@ -30,12 +29,4 @@
   &:active {
     border: none;
   }
-}
-.normall {
-  width: 108px;
-  height: 38px;
-}
-.medium {
-  width: 156px;
-  height: 38px;
 }
