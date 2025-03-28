@@ -6,7 +6,7 @@ import Image from "next/image";
 import Wrapper from "../shared/Wrapper/Wrapper";
 import RecipeCard from "./RecipeCard";
 import FilterSection from "./FilterSection";
-import styles from "./FilterSection.module.scss";
+import styles from "./style.module.scss";
 
 const difficultyColors = {
   Легко: "bg-green-100 text-green-800",

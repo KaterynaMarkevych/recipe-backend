@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import styles from "./FilterSection.module.scss";
+import styles from "./style.module.scss";
 
 // Define colors for recipe difficulty badges
 const difficultyColors = {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./FilterSection.module.scss";
+import styles from "./style.module.scss";
 
 const FilterSection = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({});
