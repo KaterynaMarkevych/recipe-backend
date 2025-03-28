@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Line from "@/components/shared/Line/Line";
 import styles from "./HeroSection.module.scss";
 import photo1 from "../../../../public/hero-section-images/picture1.svg";
 import mobilephoto from "../../../../public/hero-section-images/heromobile.svg";
@@ -32,7 +33,7 @@ const HeroSection = () => {
           Використовуй пошук за інгредієнтами
         </span>
       </div>
-      <hr className={styles.line} />
+      <Line />
     </div>
   );
 };
