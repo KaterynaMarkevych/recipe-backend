@@ -177,14 +177,17 @@ const RecipeDetail = ({ id, initialData = {} }) => {
               {authorLoading && <p>Завантаження користувача...</p>}
               {authorError && <p>{authorError}</p>}
               {author && (
-                <div className={styles.userContainer}>
+                <Link
+                  href={`/user/${author._id}`}
+                  className={styles.userContainer}
+                >
                   <img
                     src={author.avatar}
                     alt={author.username}
                     className={styles.userAvatar}
                   />
                   <p className={styles.userName}>{author.username}</p>
-                </div>
+                </Link>
               )}
             </div>
           </div>
