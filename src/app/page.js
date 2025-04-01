@@ -8,22 +8,19 @@ import PopularRecipeSection from "@/components/HomePage/PopularRecipeSection/Pop
 async function getPopularRecipes() {
   try {
     await connectToDatabase();
-    
+
     // Find top rated recipes
-    const recipes = await Recipe.find()
-      .sort({ rating: -1 })
-      .limit(4)
-      .lean();
-    
-    return { 
+    const recipes = await Recipe.find().sort({ rating: -1 }).limit(4).lean();
+
+    return {
       recipes: JSON.parse(JSON.stringify(recipes)),
-      error: null
+      error: null,
     };
   } catch (error) {
-    console.error('Error fetching popular recipes:', error);
-    return { 
+    console.error("Error fetching popular recipes:", error);
+    return {
       recipes: [],
-      error: 'Помилка при отриманні рецептів'
+      error: "Помилка при отриманні рецептів",
     };
   }
 }
@@ -34,8 +31,8 @@ export default async function Home() {
   return (
     <>
       <HeroSection />
-      <AboutUs />
       <PopularRecipeSection initialData={popularRecipesData} />
+      <AboutUs />
     </>
   );
 }

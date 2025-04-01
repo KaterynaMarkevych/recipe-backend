@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Line from "@/components/shared/Line/Line";
 import styles from "./AboutUs.module.scss";
 
 const AboutUs = () => {
@@ -34,6 +35,7 @@ const AboutUs = () => {
 
   return (
     <div className={styles.aboutUsContainer} id="about-us">
+      <Line />
       <h2 className={styles.title}>Про нас</h2>
       {paragraphs.map((text, index) => (
         <p

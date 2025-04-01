@@ -1,0 +1,108 @@
+@use "../../styles/variables.scss" as *;
+@use "../../styles/mixins.scss" as *;
+
+.container {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: #8caabe;
+  color: black;
+  padding: 10px;
+}
+.imagesContainer {
+  display: flex;
+  flex-direction: column;
+}
+.image {
+  border-radius: 5%;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.userWrapper {
+  margin: 20px;
+  cursor: pointer;
+}
+.userContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-items: center;
+}
+.userAvatar {
+  width: 50px;
+  border-radius: 50%;
+}
+.userName {
+  font-size: 20px;
+  font-weight: 400;
+  align-self: center;
+}
+
+.infoWrapper {
+  padding: 0 10px;
+  width: 100%;
+}
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px; // еквівалент gap-2
+  margin-bottom: 16px; // еквівалент mb-4
+}
+.infoItem {
+  font-size: 16px;
+}
+.nutritionContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); // grid-cols-4 (чотири рівні колонки)
+  gap: 0.5rem; // gap-2 = 8px (2 * 4px)
+}
+.description {
+  color: #374151;
+  margin-bottom: 1.5rem;
+}
+.titles {
+  font-size: 0.875rem; // Відповідає text-sm (14px)
+  color: #374151; // Відповідає text-gray-700
+  font-size: 18px;
+}
+
+@include respond-to(tablet) {
+  .imagesContainer {
+    width: 100%;
+  }
+  .infoItem {
+    font-size: 18px;
+  }
+  .description {
+    font-size: 18px;
+  }
+}
+@include respond-to(desktop) {
+  .container {
+    padding: 40px;
+  }
+  .imagesContainer {
+    width: 100%;
+  }
+  .infoWrapper {
+    padding: 10px 30px;
+    margin-left: 20px;
+  }
+  .nutritionContainer {
+    width: 60%;
+    justify-content: center;
+    margin: 0 auto;
+  }
+  .infoItem {
+    font-size: 20px;
+  }
+  .description {
+    font-size: 20px;
+  }
+  .titles {
+    font-size: 20px;
+  }
+}
