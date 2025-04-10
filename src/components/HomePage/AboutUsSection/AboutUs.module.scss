@@ -1,0 +1,77 @@
+@use "../../../styles/variables.scss" as *;
+@use "../../../styles/mixins.scss" as *;
+
+.aboutUsContainer {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  flex-direction: column;
+  justify-content: left;
+  padding: 0 100px 40px 100px;
+}
+
+.title {
+  color: #2b3a39;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 40px;
+  text-align: left;
+  margin: 20px 0;
+}
+
+.text {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 40px;
+  text-align: left;
+  margin: 10px 0;
+}
+
+.buttonsContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.toggleButton {
+  color: #2b3a39;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  border: none;
+  background: none;
+  margin-bottom: 20px;
+}
+
+.toggleButton:hover,
+.toggleButton:active {
+  color: #535d45;
+}
+
+@media (min-width: 1024) {
+  .toggleButton {
+    display: none;
+  }
+}
+
+@include respond-to(mobile) {
+  .aboutUsContainer {
+    padding: 0 30px 20px 30px;
+  }
+  .title {
+    font-size: 20px;
+    margin: 0;
+  }
+  .text {
+    font-size: 18px;
+  }
+}
+
+@include respond-to(tablet) {
+  .aboutUsContainer {
+    padding: 0 60px 20px 60px;
+  }
+}
