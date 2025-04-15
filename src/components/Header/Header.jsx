@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
+import Button from "@/components/shared/Buttons/Button";
+import AuthModal from "../Auth/AuthModal/AuthModal";
 import styles from "./Header.module.scss";
 import Image from "next/image";
-import Button from "@/components/shared/Buttons/Button";
 import logo from "../../../public/logo.svg";
 
 const Header = () => {
@@ -40,6 +41,7 @@ const Header = () => {
   //   if (e.key === "Enter") handleSearch();
   // };
 
+  const [showModal, setShowModal] = useState(false);
   return (
     <header
       className={classNames(styles.header, {
@@ -64,7 +66,7 @@ const Header = () => {
               <FontAwesomeIcon icon={faSearch} />
             </button>
             <div className={styles.CTA}>
-              <Button onClick={() => setShowLoginForm(true)}>Увійти</Button>
+              <Button onClick={() => setShowModal(true)}>Увійти</Button>
               <Button
                 onClick={() => router.push("/add-recipe")}
                 className={styles.addRecipe}
@@ -73,18 +75,9 @@ const Header = () => {
               </Button>
             </div>
           </div>
-          {/* {showLoginForm && (
-            <LoginForm
-              show={showLoginForm}
-              onClose={() => setShowLoginForm(false)}
-            />
-          )}
-          {showRegistrationForm && (
-            <RegistrationForm
-              show={showRegistrationForm}
-              onClose={() => setShowRegistrationForm(false)}
-            />
-          )} */}
+
+          {showModal && <AuthModal onClose={() => setShowModal(false)} />}
+
           <div className={styles.navigationContainer}>
             <nav
               className={classNames(styles.navMenu, {
@@ -115,6 +108,7 @@ const Header = () => {
                 </li>
               </ul>
             </nav>
+
             <button className={styles.burgerMenu} onClick={toggleMenu}>
               <FontAwesomeIcon
                 icon={isMenuOpen ? faTimes : faBars}
