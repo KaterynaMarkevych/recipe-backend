@@ -6,12 +6,13 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
 import Button from "@/components/shared/Buttons/Button";
+import AddRecipeButton from "../shared/Buttons/AddRecipeButton";
 import AuthModal from "../Auth/AuthModal/AuthModal";
 import styles from "./Header.module.scss";
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
 
-const Header = () => {
+const Header = ({ user }) => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -67,12 +68,7 @@ const Header = () => {
             </button>
             <div className={styles.CTA}>
               <Button onClick={() => setShowModal(true)}>Увійти</Button>
-              <Button
-                onClick={() => router.push("/add-recipe")}
-                className={styles.addRecipe}
-              >
-                Додати рецепт
-              </Button>
+              <AddRecipeButton user={user} />
             </div>
           </div>
 

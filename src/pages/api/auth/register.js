@@ -4,7 +4,7 @@ import { connectToDatabase } from "../../../lib/mongodb";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { name, email, password } = req.body;
+    const { name, email, password, avatar, bio } = req.body;
 
     // Підключення до бази даних
     await connectToDatabase();
@@ -25,6 +25,8 @@ export default async function handler(req, res) {
       username: name,
       email,
       password: hashedPassword,
+      bio,
+      avatar,
     });
     await newUser.save();
 

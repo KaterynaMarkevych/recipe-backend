@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import ProfilePage from "@/components/ProfilePage/ProfilePage";
 
 export default async function ProfileRoute({ params }) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions); // працює на сервері і автоматично отримає сесію
 
   if (!session) {
     redirect("/login");

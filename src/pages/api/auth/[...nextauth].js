@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDatabase } from "../../../lib/mongodb";
 import bcrypt from "bcryptjs";
-import User from "@/models/User"; // ваш модель користувача
+import User from "@/models/User";
 
 export const authOptions = {
   providers: [
@@ -34,6 +34,7 @@ export const authOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET, //шифрувати сесію і токени безпечно
   pages: {
     signIn: "/auth/signin", // налаштуйте свою сторінку для входу
     error: "/auth/error", // якщо виникає помилка, переадресовуємо сюди

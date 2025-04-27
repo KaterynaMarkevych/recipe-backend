@@ -1,26 +1,107 @@
-export default function ProfilePage({ user }) {
+"use client";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
+import Button from "../shared/Buttons/Button";
+import AddRecipeButton from "../shared/Buttons/AddRecipeButton";
+import styles from "./ProfilePage.module.scss";
+import image from "@/../public/user-page-images/recipe-sketch.jpg";
+import globeIcon from "@/../public/user-page-images/globe.svg";
+import bookmarkIcon from "@/../public/user-page-images/bookmark.svg";
+import lockkIcon from "@/../public/user-page-images/lock.svg";
+
+export default function ProfilePage() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get("/api/user-route");
+        setUser(res.data);
+      } catch (err) {
+        console.error("Помилка отримання даних користувача:", err);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  if (!user) return <div>Завантаження профілю...</div>;
+
+  const isProfileIncomplete = !user.bio || !user.avatar;
+
   return (
-    <div style={{ padding: "12rem" }}>
-      <div className="bg-blue-200 p-6 rounded-md flex items-center gap-4">
-        <img
-          src={user.avatar}
-          alt="User avatar"
-          className="w-24 h-24 rounded-full object-cover"
-        />
-        <div>
-          <h2 className="text-xl  text-gray-700 font-semibold">
-            {user.username}
-          </h2>
-          <p className="text-sm text-gray-700">{user.bio}</p>
-          <p className="text-sm text-gray-600">{user.bio}</p>
-          <div className="flex gap-4 text-sm mt-2">
-            <span>{user.following} підписки</span>
-            <span>{user.followers} підписників</span>
-            <span>{user.published} опублікованих рецептів</span>
+    <div className={styles.profilePage}>
+      <div className={styles.hero}>
+        <div className={styles.infoWraper}>
+          <img
+            src={user.avatar || "/default-avatar.jpg"}
+            alt="User avatar"
+            className={styles.avatar}
+          />
+          <div className={styles.info}>
+            <h2 className={styles.username}>
+              {user.username || "Ім'я користувача"}
+            </h2>
+            <p className={styles.bio}>{user.bio || "Про себе ще не додано."}</p>
           </div>
-          <button className="mt-3 px-4 py-1 border rounded hover:bg-white">
-            Редагувати профіль
-          </button>
+        </div>
+
+        <div className={styles.stats}>
+          <div className={styles.topRow}>
+            <p className={styles.statsIteam}>
+              <span className={styles.count}>{user.following || 0}</span>{" "}
+              підписки
+            </p>
+            <p className={styles.statsIteam}>
+              <span className={styles.count}>{user.followers || 0}</span>{" "}
+              підписників
+            </p>
+          </div>
+          <div className={styles.bottomCenter}>
+            <p className={styles.statsIteam}>
+              <span className={styles.count}>{user.published || 0}</span>{" "}
+              опублікованих рецептів
+            </p>
+            {/*поля published не має в моделі користувача */}
+          </div>
+          <Button>
+            {isProfileIncomplete ? "Заповнити профіль" : "Редагувати профіль"}
+          </Button>
+        </div>
+      </div>
+      {/*line from shared */}
+      <div className={styles.container}>
+        <div className={styles.cta}>
+          <Link href="/saved" className={styles.buttonLink}>
+            <Button variant="secondary" size="bigSize">
+              <Image
+                src={bookmarkIcon}
+                alt="bookmarkIcon"
+                className={styles.icon}
+              />
+              Збережені рецепти
+            </Button>
+          </Link>
+          <Link href="/published" className={styles.buttonLink}>
+            <Button variant="secondary" size="bigSize">
+              <Image src={globeIcon} alt="globeIcon" className={styles.icon} />
+              Опубліковані рецепти
+            </Button>
+          </Link>
+          <Link href="/private" className={styles.buttonLink}>
+            <Button variant="secondary" size="bigSize">
+              <Image src={lockkIcon} alt="lockkIcon" className={styles.icon} />
+              Приватні рецепти
+            </Button>
+          </Link>
+        </div>
+
+        <div className={styles.addRecipe}>
+          <Image src={image} alt="sketch recipe" className={styles.image} />
+          <AddRecipeButton user={user} />
         </div>
       </div>
     </div>

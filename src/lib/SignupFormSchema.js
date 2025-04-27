@@ -20,3 +20,28 @@ export const SignupFormSchema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Confirm Password is required"),
 });
+import * as yup from "yup";
+
+export const SignupFormSchemaStep1 = yup.object().shape({
+  name: yup.string().required("Введіть ім’я"),
+  email: yup.string().email("Некоректний email").required("Email обов’язковий"),
+  password: yup
+    .string()
+    .min(6, "Мінімум 6 символів")
+    .required("Пароль обов’язковий"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Паролі не співпадають")
+    .required("Підтвердіть пароль"),
+});
+
+export const SignupFormSchemaStep2 = yup.object().shape({
+  username: yup.string().required("Введіть нікнейм"),
+  avatar: yup
+    .mixed()
+    .test("fileType", "Файл повинен бути зображенням", (value) => {
+      if (!value || value.length === 0) return true; // дозволити відсутність файлу
+      return value[0].type.startsWith("image/");
+    }),
+  bio: yup.string().min(5, "Біо занадто коротке").notRequired(),
+});
