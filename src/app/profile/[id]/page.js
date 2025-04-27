@@ -7,7 +7,7 @@ export default async function ProfileRoute({ params }) {
   const session = await getServerSession(authOptions); // працює на сервері і автоматично отримає сесію
 
   if (!session) {
-    redirect("/login");
+    redirect("/");
   }
 
   // Опціонально: перевірка, що id збігається з session.user.id

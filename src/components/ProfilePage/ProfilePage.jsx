@@ -101,7 +101,7 @@ export default function ProfilePage() {
 
         <div className={styles.addRecipe}>
           <Image src={image} alt="sketch recipe" className={styles.image} />
-          <AddRecipeButton user={user} />
+          <AddRecipeButton />
         </div>
       </div>
     </div>

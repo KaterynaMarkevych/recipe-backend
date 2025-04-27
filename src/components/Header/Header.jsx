@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
-import Button from "@/components/shared/Buttons/Button";
+import AuthButton from "../shared/Buttons/AuthButton";
 import AddRecipeButton from "../shared/Buttons/AddRecipeButton";
-import AuthModal from "../Auth/AuthModal/AuthModal";
+import ProfileNavLink from "../ProfileNavLink/ProfileNavLink";
 import styles from "./Header.module.scss";
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
 
-const Header = ({ user }) => {
+const Header = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -42,7 +42,6 @@ const Header = ({ user }) => {
   //   if (e.key === "Enter") handleSearch();
   // };
 
-  const [showModal, setShowModal] = useState(false);
   return (
     <header
       className={classNames(styles.header, {
@@ -67,12 +66,10 @@ const Header = ({ user }) => {
               <FontAwesomeIcon icon={faSearch} />
             </button>
             <div className={styles.CTA}>
-              <Button onClick={() => setShowModal(true)}>Увійти</Button>
-              <AddRecipeButton user={user} />
+              <AuthButton />
+              <AddRecipeButton />
             </div>
           </div>
-
-          {showModal && <AuthModal onClose={() => setShowModal(false)} />}
 
           <div className={styles.navigationContainer}>
             <nav
@@ -92,11 +89,9 @@ const Header = ({ user }) => {
                     Тип кухні
                   </a>
                 </li>
-                <li>
-                  <a href="/profile" className={styles.link}>
-                    Профіль
-                  </a>
-                </li>
+
+                <ProfileNavLink />
+
                 <li>
                   <a href="/#about-us" className={styles.link}>
                     Про нас
