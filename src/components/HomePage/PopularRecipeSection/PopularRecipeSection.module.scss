@@ -1,0 +1,110 @@
+@use "../../../styles/variables.scss" as *;
+@use "../../../styles/mixins.scss" as *;
+
+.popularSection {
+  margin: 0;
+}
+.container {
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+.header {
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: left;
+  color: #2b3a39;
+}
+
+.subtitle {
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.error {
+  background: #ffe5e5;
+  color: #d9534f;
+  text-align: center;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.loader::after {
+  content: "";
+  width: 48px;
+  height: 48px;
+  border: 4px solid #007bff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.noRecipes {
+  text-align: center;
+  color: #666;
+  padding: 40px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.viewAll {
+  display: flex;
+  justify-content: flex-start;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.viewAllButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #b9d7ea;
+  color: black;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.viewAllButton:hover {
+  background: #97c8e6;
+}
+
+@include respond-to(tablet) {
+  .container {
+    margin: 0 35px;
+  }
+}
+@include respond-to(desktop) {
+  .popularSection {
+    padding: 0 100px 0 100px;
+  }
+  .container {
+    padding: 0;
+  }
+  .subtitle {
+    margin: 0;
+  }
+}

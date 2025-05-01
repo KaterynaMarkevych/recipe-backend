@@ -18,6 +18,8 @@ export default async function handler(req, res) {
         includeIngredients,
         excludeIngredients,
         searchTerm,
+        limit,
+        page,
       } = req.query;
 
       // Об'єкт фільтрації
@@ -81,8 +83,20 @@ export default async function handler(req, res) {
           ? { cookingTime: 1 }
           : {};
 
-      // Отримання рецептів з фільтрацією та сортуванням
-      const recipes = await Recipe.find(filter).sort(sortObj).exec();
+      // Параметри пагінації
+      const limitNum = limit ? parseInt(limit) : 0; // 0 = без ліміту
+      const pageNum = page ? parseInt(page) : 1;
+      const skip = limitNum > 0 ? (pageNum - 1) * limitNum : 0;
+
+      // Отримання рецептів з фільтрацією, сортуванням та пагінацією
+      const query = Recipe.find(filter).sort(sortObj);
+      
+      // Застосовуємо пагінацію, якщо вказаний ліміт
+      if (limitNum > 0) {
+        query.skip(skip).limit(limitNum);
+      }
+      
+      const recipes = await query.exec();
 
       res.status(200).json(recipes);
     } catch (error) {

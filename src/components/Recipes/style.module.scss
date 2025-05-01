@@ -1,0 +1,56 @@
+@use "../../styles/variables.scss" as *;
+@use "../../styles/mixins.scss" as *;
+
+.filterContainer {
+  background-color: #f9fafb;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  width: 350px;
+  height: 100%;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem 1rem;
+}
+.card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+  }
+  max-height: 400px;
+}
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem; // 6 * 0.25rem = 1.5rem (24px)
+}
+
+@include respond-to(tablet) {
+  .filterContainer {
+    width: 100%;
+  }
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@include respond-to(desktop) {
+  .filterContainer {
+    width: 600px;
+  }
+  .container {
+    flex-direction: row-reverse;
+  }
+  .gridContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
