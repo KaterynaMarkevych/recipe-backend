@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
+import AuthButton from "../shared/Buttons/AuthButton";
+import AddRecipeButton from "../shared/Buttons/AddRecipeButton";
+import ProfileNavLink from "../ProfileNavLink/ProfileNavLink";
 import styles from "./Header.module.scss";
 import Image from "next/image";
-import Button from "@/components/shared/Buttons/Button";
 import logo from "../../../public/logo.svg";
 
 const Header = () => {
@@ -64,27 +66,11 @@ const Header = () => {
               <FontAwesomeIcon icon={faSearch} />
             </button>
             <div className={styles.CTA}>
-              <Button onClick={() => setShowLoginForm(true)}>Увійти</Button>
-              <Button
-                onClick={() => router.push("/add-recipe")}
-                className={styles.addRecipe}
-              >
-                Додати рецепт
-              </Button>
+              <AuthButton />
+              <AddRecipeButton />
             </div>
           </div>
-          {/* {showLoginForm && (
-            <LoginForm
-              show={showLoginForm}
-              onClose={() => setShowLoginForm(false)}
-            />
-          )}
-          {showRegistrationForm && (
-            <RegistrationForm
-              show={showRegistrationForm}
-              onClose={() => setShowRegistrationForm(false)}
-            />
-          )} */}
+
           <div className={styles.navigationContainer}>
             <nav
               className={classNames(styles.navMenu, {
@@ -103,11 +89,9 @@ const Header = () => {
                     Тип кухні
                   </a>
                 </li>
-                <li>
-                  <a href="/profile" className={styles.link}>
-                    Профіль
-                  </a>
-                </li>
+
+                <ProfileNavLink />
+
                 <li>
                   <a href="/#about-us" className={styles.link}>
                     Про нас
@@ -115,6 +99,7 @@ const Header = () => {
                 </li>
               </ul>
             </nav>
+
             <button className={styles.burgerMenu} onClick={toggleMenu}>
               <FontAwesomeIcon
                 icon={isMenuOpen ? faTimes : faBars}

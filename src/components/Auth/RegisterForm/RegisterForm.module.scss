@@ -1,0 +1,175 @@
+@use "../../../styles/variables.scss" as *;
+@use "../../../styles/mixins.scss" as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin: 0 auto;
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.backButton {
+  position: absolute;
+  top: 7px;
+  left: 15px;
+  background: none;
+  border: none;
+  color: #0070f3;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 6px;
+
+  &:hover {
+    color: #0059c9;
+  }
+
+  &:focus {
+    outline: 2px solid #0070f3;
+  }
+}
+.titleWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #0070f3;
+    outline: none;
+  }
+}
+
+.button {
+  background-color: #0070f3;
+  color: white;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #0059c9;
+  }
+}
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #333;
+}
+.textarea {
+  @extend .input;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.link {
+  background: none;
+  border: none;
+  color: #0070f3;
+  font-size: 1.2rem;
+  cursor: pointer;
+  align-self: flex-start;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.error,
+.errorMessage {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: -8px;
+  margin-bottom: 4px;
+}
+
+.previewContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatarPreview {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
+}
+
+.placeholderText {
+  color: #9ca3af;
+}
+
+.chooseFileButton {
+  background-color: #fff;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f9fafb;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.hiddenInput {
+  display: none;
+}
+
+@include respond-to(mobile) {
+  .form {
+    padding: 1.5rem;
+  }
+}
