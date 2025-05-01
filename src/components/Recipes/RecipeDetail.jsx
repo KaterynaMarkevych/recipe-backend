@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ArrowLeftIcon from "../shared/ArrowLeftIcon/ArrowLeftIcon";
 import styles from "./RecipeDetail.module.scss";
+import { ICONS } from "@/constants/icons";
 
 // Define colors for difficulty badges outside the component
 const difficultyColors = {
@@ -222,7 +223,7 @@ const RecipeDetail = ({ id, initialData = {} }) => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="flex items-center">
                 <img
-                  src="/icons/clock.svg"
+                  src={ICONS.clock}
                   alt="Star icon"
                   className="h-5 w-5 md:h-7 md:w-7 lg:h-9 lg:w-9"
                 />
@@ -236,7 +237,7 @@ const RecipeDetail = ({ id, initialData = {} }) => {
 
               <div className="flex items-center">
                 <img
-                  src="/icons/users.svg"
+                  src={ICONS.users}
                   alt="Star icon"
                   className="h-5 w-5 md:h-7 md:w-7 lg:h-9 lg:w-9"
                 />
@@ -250,7 +251,7 @@ const RecipeDetail = ({ id, initialData = {} }) => {
 
               <div className="flex items-center">
                 <img
-                  src="/icons/globe.svg"
+                  src={ICONS.globe}
                   alt="Star icon"
                   className="h-5 w-5 md:h-7 md:w-7 lg:h-9 lg:w-9"
                 />
@@ -264,7 +265,7 @@ const RecipeDetail = ({ id, initialData = {} }) => {
 
               <div className="flex items-center">
                 <img
-                  src="/icons/star.svg"
+                  src={ICONS.stars}
                   alt="Star icon"
                   className="h-5 w-5 md:h-7 md:w-7 lg:h-9 lg:w-9"
                 />

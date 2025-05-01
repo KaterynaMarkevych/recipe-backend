@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./style.module.scss";
+import { ICONS } from "@/constants/icons";
 
 // Define colors for recipe difficulty badges
 const difficultyColors = {
@@ -43,16 +44,12 @@ const RecipeCard = ({ recipe }) => {
 
         <div className="flex items-center justify-between text-sm mb-3">
           <div className="flex items-center">
-            <img src="/icons/clock.svg" className="h-4 w-4 mr-1" />
+            <img src={ICONS.clock} className="h-4 w-4 mr-1" />
             <span>{recipe.cookingTime} хв</span>
           </div>
 
           <div className="flex items-center">
-            <img
-              src="/icons/users.svg"
-              alt="Users Icon"
-              className="h-4 w-4 mr-1"
-            />
+            <img src={ICONS.users} alt="Users Icon" className="h-4 w-4 mr-1" />
             <span>{recipe.servings} порц.</span>
           </div>
 
@@ -81,7 +78,7 @@ const RecipeCard = ({ recipe }) => {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <img src="/icons/star.svg" alt="Star icon" className="h-5 w-5" />
+            <img src={ICONS.stars} alt="Star icon" className="h-5 w-5" />
             <span className="ml-1 text-sm">
               {recipe.rating?.toFixed(1) || "0.0"}
             </span>
