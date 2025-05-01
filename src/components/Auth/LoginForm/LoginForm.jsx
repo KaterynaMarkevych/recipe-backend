@@ -64,9 +64,6 @@ export default function LoginForm({ onRegisterClick }) {
       </button>
 
       <div className={styles.footer}>
-        <button type="button" className={styles.link}>
-          Забули пароль?
-        </button>
         <button type="button" onClick={onRegisterClick} className={styles.link}>
           Зареєструватися
         </button>

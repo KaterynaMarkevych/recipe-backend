@@ -31,7 +31,14 @@ export default async function handler(req, res) {
     await newUser.save();
 
     // Відправка відповіді
-    res.status(201).json({ message: "Користувач успішно зареєстрований" });
+    res.status(201).json({
+      message: "Користувач успішно зареєстрований",
+      user: {
+        id: newUser._id,
+        email: newUser.email,
+        username: newUser.username,
+      },
+    });
   } else {
     res.status(405).json({ message: "Метод не підтримується" });
   }

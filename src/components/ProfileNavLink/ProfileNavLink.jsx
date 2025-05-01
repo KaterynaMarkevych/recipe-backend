@@ -30,11 +30,10 @@ export default function ProfileNavLink() {
           </Link>
         ) : (
           // Якщо нема session — кнопка-заглушка
-          <li>
-            <a href="#" className={styles.link} onClick={handleClick}>
-              Профіль
-            </a>
-          </li>
+
+          <a href="#" className={styles.link} onClick={handleClick}>
+            Профіль
+          </a>
         )}
       </li>
 

@@ -36,12 +36,19 @@ export const SignupFormSchemaStep1 = yup.object().shape({
 });
 
 export const SignupFormSchemaStep2 = yup.object().shape({
-  username: yup.string().required("Введіть нікнейм"),
   avatar: yup
     .mixed()
     .test("fileType", "Файл повинен бути зображенням", (value) => {
       if (!value || value.length === 0) return true; // дозволити відсутність файлу
       return value[0].type.startsWith("image/");
     }),
-  bio: yup.string().min(5, "Біо занадто коротке").notRequired(),
+  bio: yup
+    .string()
+    .notRequired() // необов’язкове поле
+    .test("bio-length", "Біо занадто коротке", (value) => {
+      if (!value || value.trim() === "") {
+        return true; // якщо пусто — пропускаємо
+      }
+      return value.trim().length >= 5; // інакше мінімум 5 знаків
+    }),
 });
