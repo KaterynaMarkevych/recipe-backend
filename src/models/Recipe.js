@@ -4,7 +4,13 @@ const RecipeSchema = new mongoose.Schema({
   title: { type: String, required: true },
   image: { type: String, required: false },
   description: { type: String },
-  ingredients: [{ type: String, required: true }],
+  ingredients: [
+    {
+      quantity: { type: String, required: true },
+      unit: { type: String, required: true },
+      name: { type: String, required: true },
+    },
+  ],
   steps: [{ type: String, required: true }],
   type: {
     type: String,

@@ -5,7 +5,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../shared/Buttons/Button";
-import AddRecipeButton from "../shared/Buttons/AddRecipeButton";
+import { AddRecipeButton } from "../shared/Buttons/AddRecipeButton";
 import styles from "./ProfilePage.module.scss";
 import image from "@/../public/user-page-images/recipe-sketch.jpg";
 import globeIcon from "@/../public/user-page-images/globe.svg";
