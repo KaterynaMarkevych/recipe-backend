@@ -133,6 +133,16 @@ export default function AddRecipeModal() {
     const areIngredientsValid = ingredients.every(
       (ing) => ing.quantity && ing.unit && ing.name
     );
+
+    if (formData.ingredients.length === 0) {
+      alert("Будь ласка, додайте хоча б один інгредієнт.");
+      return;
+    }
+
+    if (formData.steps.length === 0) {
+      alert("Будь ласка, додайте хоча б один крок приготування.");
+      return;
+    }
     const areStepsValid = steps.every((step) => step.trim() !== "");
     const isNutritionValid =
       nutrition.calories &&
@@ -245,7 +255,7 @@ export default function AddRecipeModal() {
             }
           }}
         >
-          Обрати файл
+          Оберіть зображення
           <input
             id="image"
             type="file"
@@ -265,61 +275,61 @@ export default function AddRecipeModal() {
         />
 
         <div>
-          <label className="font-medium">Інгредієнти</label>
+          <label className={styles.title}>Інгредієнти</label>
           {formData.ingredients.map((item, i) => (
             <div
               key={i}
               className="flex flex-col sm:flex-row sm:flex-nowrap items-start sm:items-center gap-2 mb-2"
             >
-              <input
-                type="text"
-                value={item.quantity}
-                onChange={(e) => handleIngredientChange(e, i, "quantity")}
-                placeholder="Кількість"
-                className={styles.input}
-                required
-              />
-              <select
-                value={item.unit}
-                onChange={(e) => handleIngredientChange(e, i, "unit")}
-                className={styles.input}
-                required
-              >
-                <option value="">Одиниця</option>
-                {units.map((unit) => (
-                  <option key={unit} value={unit}>
-                    {unit}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="text"
-                value={item.name}
-                onChange={(e) => handleIngredientChange(e, i, "name")}
-                placeholder="Назва інгредієнта"
-                className={styles.input}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => handleRemoveField("ingredients", i)}
-                title="Видалити"
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
+              <div className={styles.wrapper}>
+                <input
+                  type="text"
+                  value={item.quantity}
+                  onChange={(e) => handleIngredientChange(e, i, "quantity")}
+                  placeholder="Кількість"
+                  className={styles.input}
+                  required
+                />
+                <select
+                  value={item.unit}
+                  onChange={(e) => handleIngredientChange(e, i, "unit")}
+                  className={styles.input}
+                  required
+                >
+                  <option value="">Одиниця</option>
+                  {units.map((unit) => (
+                    <option key={unit} value={unit}>
+                      {unit}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.wrapper}>
+                <input
+                  type="text"
+                  value={item.name}
+                  onChange={(e) => handleIngredientChange(e, i, "name")}
+                  placeholder="Назва інгредієнта"
+                  className={styles.input}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveField("ingredients", i)}
+                  title="Видалити"
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
             </div>
           ))}
-          <button
-            type="button"
-            onClick={() => handleAddIngredient()}
-            className="btn"
-          >
+          <Button variant="addIteam" onClick={() => handleAddIngredient()}>
             + Додати інгредієнт
-          </button>
+          </Button>
         </div>
 
         <div>
-          <label className="font-medium mt-4">
+          <label className={styles.title}>
             Покрокова інструкція з приготування
           </label>
           {formData.steps.map((step, i) => (
@@ -342,13 +352,9 @@ export default function AddRecipeModal() {
               </button>
             </div>
           ))}
-          <button
-            type="button"
-            onClick={() => handleAddField("steps")}
-            className="btn"
-          >
+          <Button variant="addIteam" onClick={() => handleAddField("steps")}>
             + Додати крок
-          </button>
+          </Button>
         </div>
 
         <select
@@ -381,10 +387,10 @@ export default function AddRecipeModal() {
         </select>
 
         <div className={styles.checkboxGroup}>
-          <label className={styles.label}>Дієта</label>
+          <label className={styles.title}>Дієта</label>
           {["Веганська", "Вегетеріанська", "Безглютенова", "Безлактозна"].map(
             (d) => (
-              <label key={d} className="block">
+              <label key={d} className={styles.label}>
                 <input
                   type="checkbox"
                   value={d}
@@ -468,10 +474,11 @@ export default function AddRecipeModal() {
             required
           />
         </div>
-
-        <div>
-          <Button>Зберегти рецепт</Button>
-          <Button type="submit">Опублікувати рецепт</Button>
+        <div className={styles.CTA}>
+          <Button variant="third">Зберегти рецепт</Button>
+          <Button variant="third" type="submit">
+            Опублікувати рецепт
+          </Button>
         </div>
       </form>
     </div>
