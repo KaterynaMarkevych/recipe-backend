@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import { uploadToCloudinary } from "@/scripts/uploadToCloudinary";
 import Button from "../shared/Buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -117,8 +119,17 @@ export default function AddRecipeModal() {
     reader.readAsDataURL(file);
   };
 
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsPublishing(true);
+    setSuccessMessage("");
+    setLoading(true);
 
     const {
       title,
@@ -172,27 +183,26 @@ export default function AddRecipeModal() {
 
       const recipeData = {
         ...formData,
-        image: imageUrl, //Додаємо посилання на зображення
+        image: imageUrl, // Додаємо посилання на зображення
       };
 
-      const res = await fetch("/api/recipes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(recipeData),
-      });
+      await axios.post("/api/recipes", recipeData);
 
       console.log(recipeData);
 
-      if (res.ok) {
-        alert("Рецепт успішно додано!");
-        // Очистити форму або перенаправити
-      } else {
-        const data = await res.json();
-        alert("Помилка: " + data.message);
-      }
+      setSuccessMessage("Рецепт успішно опубліковано!");
+      setTimeout(() => {
+        if (session?.user?.id) {
+          window.location.href = `/profile/${session.user.id}`;
+        } else {
+          window.location.href = `/`;
+        }
+      }, 1500);
     } catch (error) {
       console.error("Помилка при надсиланні рецепта:", error);
-      alert("Щось пішло не так. Спробуйте ще раз.");
+      const errorMessage =
+        error.response?.data?.message || "Щось пішло не так. Спробуйте ще раз.";
+      alert("Помилка: " + errorMessage);
     }
   };
 
@@ -215,6 +225,48 @@ export default function AddRecipeModal() {
       ...prev,
       [field]: prev[field].filter((_, i) => i !== index),
     }));
+  };
+
+  const handleSaveDraft = async () => {
+    if (formData.ingredients.length === 0) {
+      alert("Будь ласка, додайте хоча б один інгредієнт.");
+      return;
+    }
+
+    if (formData.steps.length === 0) {
+      alert("Будь ласка, додайте хоча б один крок приготування.");
+      return;
+    }
+
+    setIsSavingDraft(true);
+    setSuccessMessage("");
+    setLoading(true);
+
+    let imageUrl = "";
+
+    if (imageFile) {
+      imageUrl = await uploadToCloudinary(imageFile);
+    }
+
+    const draftData = {
+      ...formData,
+      image: imageUrl,
+      is_published: false,
+    };
+    try {
+      await axios.post("/api/recipes", draftData);
+      setSuccessMessage("Рецепт збережено як чернетку!");
+      setTimeout(() => {
+        if (session?.user?.id) {
+          window.location.href = `/profile/${session.user.id}`;
+        } else {
+          window.location.href = `/`;
+        }
+      }, 1500);
+    } catch (error) {
+      console.error("Помилка збереження рецепта:", error);
+      alert("Не вдалося зберегти рецепт.");
+    }
   };
 
   return (
@@ -475,12 +527,24 @@ export default function AddRecipeModal() {
           />
         </div>
         <div className={styles.CTA}>
-          <Button variant="third">Зберегти рецепт</Button>
-          <Button variant="third" type="submit">
-            Опублікувати рецепт
+          <Button
+            variant="third"
+            type="button"
+            onClick={handleSaveDraft}
+            disabled={isSavingDraft}
+          >
+            {isSavingDraft ? "Збереження..." : "Зберегти рецепт"}
+          </Button>
+
+          <Button variant="third" type="submit" disabled={isPublishing}>
+            {isPublishing ? "Публікація..." : "Опублікувати рецепт"}
           </Button>
         </div>
       </form>
+      {loading && <div className={styles.loading}>Завантаження...</div>}
+      {successMessage && (
+        <div className={styles.successMessage}>{successMessage}</div>
+      )}
     </div>
   );
 }

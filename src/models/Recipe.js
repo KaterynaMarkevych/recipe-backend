@@ -71,6 +71,7 @@ const RecipeSchema = new mongoose.Schema({
   rating: { type: Number, min: 0, max: 5, default: 0 },
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // зв'язок з користувачем
   createdAt: { type: Date, default: Date.now },
+  is_published: { type: Boolean, default: true },
 });
 
 const Recipe = mongoose.models.Recipe || mongoose.model("Recipe", RecipeSchema);
