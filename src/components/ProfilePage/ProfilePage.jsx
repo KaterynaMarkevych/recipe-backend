@@ -5,6 +5,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../shared/Buttons/Button";
+import Line from "../shared/Line/Line";
 import { AddRecipeButton } from "../shared/Buttons/AddRecipeButton";
 import styles from "./ProfilePage.module.scss";
 import image from "@/../public/user-page-images/recipe-sketch.jpg";
@@ -31,7 +32,7 @@ export default function ProfilePage() {
   if (!user) return <div>Завантаження профілю...</div>;
 
   const isProfileIncomplete = !user.bio || !user.avatar;
-
+  console.log(user);
   return (
     <div className={styles.profilePage}>
       <div className={styles.hero}>
@@ -62,7 +63,9 @@ export default function ProfilePage() {
           </div>
           <div className={styles.bottomCenter}>
             <p className={styles.statsIteam}>
-              <span className={styles.count}>{user.published || 0}</span>{" "}
+              <span className={styles.count}>
+                {user?.stats?.published || 0}
+              </span>{" "}
               опублікованих рецептів
             </p>
             {/*поля published не має в моделі користувача */}
@@ -72,7 +75,9 @@ export default function ProfilePage() {
           </Button>
         </div>
       </div>
-      {/*line from shared */}
+
+      <Line />
+
       <div className={styles.container}>
         <div className={styles.cta}>
           <Link href="/saved" className={styles.buttonLink}>
