@@ -7,6 +7,7 @@ import Link from "next/link";
 import Button from "../shared/Buttons/Button";
 import Line from "../shared/Line/Line";
 import { AddRecipeButton } from "../shared/Buttons/AddRecipeButton";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import styles from "./ProfilePage.module.scss";
 import image from "@/../public/user-page-images/recipe-sketch.jpg";
 import globeIcon from "@/../public/user-page-images/globe.svg";
@@ -15,6 +16,7 @@ import lockkIcon from "@/../public/user-page-images/lock.svg";
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -33,6 +35,7 @@ export default function ProfilePage() {
 
   const isProfileIncomplete = !user.bio || !user.avatar;
   console.log(user);
+
   return (
     <div className={styles.profilePage}>
       <div className={styles.hero}>
@@ -68,11 +71,21 @@ export default function ProfilePage() {
               </span>{" "}
               опублікованих рецептів
             </p>
-            {/*поля published не має в моделі користувача */}
           </div>
-          <Button>
+          <Button onClick={() => setIsModalOpen(true)}>
             {isProfileIncomplete ? "Заповнити профіль" : "Редагувати профіль"}
           </Button>
+
+          {isModalOpen && (
+            <EditProfileModal
+              user={user}
+              onClose={() => setIsModalOpen(false)}
+              onSave={(updatedUser) => {
+                setUser(updatedUser); // оновлює локальний стан
+                setIsModalOpen(false);
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -80,8 +93,15 @@ export default function ProfilePage() {
 
       <div className={styles.container}>
         <div className={styles.cta}>
+          <Link href="/private" className={styles.buttonLink}>
+            <Button variant="secondary">
+              <Image src={lockkIcon} alt="lockkIcon" className={styles.icon} />
+              Приватні рецепти
+            </Button>
+          </Link>
+
           <Link href="/saved" className={styles.buttonLink}>
-            <Button variant="secondary" size="bigSize">
+            <Button variant="secondary">
               <Image
                 src={bookmarkIcon}
                 alt="bookmarkIcon"
@@ -90,16 +110,11 @@ export default function ProfilePage() {
               Збережені рецепти
             </Button>
           </Link>
+
           <Link href="/published" className={styles.buttonLink}>
-            <Button variant="secondary" size="bigSize">
+            <Button variant="secondary">
               <Image src={globeIcon} alt="globeIcon" className={styles.icon} />
               Опубліковані рецепти
-            </Button>
-          </Link>
-          <Link href="/private" className={styles.buttonLink}>
-            <Button variant="secondary" size="bigSize">
-              <Image src={lockkIcon} alt="lockkIcon" className={styles.icon} />
-              Приватні рецепти
             </Button>
           </Link>
         </div>
