@@ -149,7 +149,7 @@ const FilterSection = ({ onFilterChange }) => {
           </label>
           <input
             type="text"
-            placeholder="Введіть назву..."
+            placeholder="Введіть назву або інгредієнти"
             value={filters.searchTerm || ""}
             onChange={(e) =>
               handleFilterChange("searchTerm", e.target.value || null)

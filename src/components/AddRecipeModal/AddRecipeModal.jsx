@@ -57,6 +57,7 @@ const cuisine = [
   "Ефіопська",
 ];
 export default function AddRecipeModal() {
+  const { data: session } = useSession();
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -70,6 +71,7 @@ export default function AddRecipeModal() {
     difficulty: "",
     nutrition: { calories: "", protein: "", fats: "", carbs: "" },
     servings: "",
+    author: session?.user?.id,
   });
 
   const handleChange = (e) => {
@@ -123,7 +125,6 @@ export default function AddRecipeModal() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { data: session } = useSession();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -184,6 +185,7 @@ export default function AddRecipeModal() {
       const recipeData = {
         ...formData,
         image: imageUrl, // Додаємо посилання на зображення
+        author: session?.user?.id,
       };
 
       await axios.post("/api/recipes", recipeData);
@@ -252,7 +254,9 @@ export default function AddRecipeModal() {
       ...formData,
       image: imageUrl,
       is_published: false,
+      author: session?.user?.id,
     };
+    console.log("Автор рецепта:", session?.user?.id);
     try {
       await axios.post("/api/recipes", draftData);
       setSuccessMessage("Рецепт збережено як чернетку!");
