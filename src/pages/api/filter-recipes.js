@@ -60,15 +60,34 @@ export default async function handler(req, res) {
             },
           },
         }),
-        ...(searchTerm && {
-          name: {
-            $regex: new RegExp(
-              searchTerm.replace(/[.*+?^=!:${}()|\[\]\/\\]/g, "\\$&"),
-              "i"
-            ),
-          },
-        }),
+        // ...(searchTerm && {
+        //   title: {
+        //     $regex: new RegExp(
+        //       searchTerm.replace(/[.*+?^=!:${}()|\[\]\/\\]/g, "\\$&"),
+        //       "i"
+        //     ),
+        //   },
+        // }),
       };
+      if (searchTerm) {
+        const terms = searchTerm
+          .split(" ")
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+        filter.$or = [
+          {
+            title: {
+              $regex: new RegExp(searchTerm, "i"), // вся фраза в назві
+            },
+          },
+          {
+            "ingredients.name": {
+              $all: terms.map((term) => new RegExp(term, "i")), // всі слова в інгредієнтах
+            },
+          },
+        ];
+      }
 
       // Видаляємо undefined поля, щоб уникнути помилок
       Object.keys(filter).forEach(
@@ -90,12 +109,12 @@ export default async function handler(req, res) {
 
       // Отримання рецептів з фільтрацією, сортуванням та пагінацією
       const query = Recipe.find(filter).sort(sortObj);
-      
+
       // Застосовуємо пагінацію, якщо вказаний ліміт
       if (limitNum > 0) {
         query.skip(skip).limit(limitNum);
       }
-      
+
       const recipes = await query.exec();
 
       res.status(200).json(recipes);

@@ -53,6 +53,33 @@
     background-color: #dde5ea;
   }
 }
+.third {
+  background: #b9d7ea;
+  text-align: center;
+  border: 1px solid #000;
+  &:hover {
+    background: #8caabe;
+    border: 1px solid #000;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    border: none;
+  }
+}
 .bigSize {
   width: 264px;
+}
+.addIteam {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: #d6e6f2;
+  }
 }

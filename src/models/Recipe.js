@@ -4,7 +4,13 @@ const RecipeSchema = new mongoose.Schema({
   title: { type: String, required: true },
   image: { type: String, required: false },
   description: { type: String },
-  ingredients: [{ type: String, required: true }],
+  ingredients: [
+    {
+      quantity: { type: String, required: false, default: "" },
+      unit: { type: String, required: false, default: "" },
+      name: { type: String, required: true },
+    },
+  ],
   steps: [{ type: String, required: true }],
   type: {
     type: String,
@@ -63,8 +69,9 @@ const RecipeSchema = new mongoose.Schema({
   },
   servings: { type: Number, required: true },
   rating: { type: Number, min: 0, max: 5, default: 0 },
-  author: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // зв'язок з користувачем
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // зв'язок з користувачем
   createdAt: { type: Date, default: Date.now },
+  is_published: { type: Boolean, default: true },
 });
 
 const Recipe = mongoose.models.Recipe || mongoose.model("Recipe", RecipeSchema);

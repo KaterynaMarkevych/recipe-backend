@@ -35,7 +35,9 @@ const Recipes = ({ initialData = {} }) => {
           }
         });
 
-        const response = await fetch(`/api/recipes?${queryParams.toString()}`);
+        const response = await fetch(
+          `/api/filter-recipes?${queryParams.toString()}`
+        );
 
         if (!response.ok) {
           throw new Error("Помилка при отриманні рецептів");

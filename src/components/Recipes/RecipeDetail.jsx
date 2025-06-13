@@ -334,7 +334,15 @@ const RecipeDetail = ({ id, initialData = {} }) => {
             {recipe.ingredients &&
               recipe.ingredients.map((ingredient, index) => (
                 <li key={index} className="flex items-start">
-                  <span>{ingredient}</span>
+                  <span>
+                    <span className="font-semibold text-blue-700">
+                      {ingredient.quantity}
+                    </span>{" "}
+                    <span className="font-semibold text-blue-700">
+                      {ingredient.unit}
+                    </span>{" "}
+                    {ingredient.name}
+                  </span>
                 </li>
               ))}
           </ul>

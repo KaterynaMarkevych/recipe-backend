@@ -5,7 +5,9 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../shared/Buttons/Button";
-import AddRecipeButton from "../shared/Buttons/AddRecipeButton";
+import Line from "../shared/Line/Line";
+import { AddRecipeButton } from "../shared/Buttons/AddRecipeButton";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import styles from "./ProfilePage.module.scss";
 import image from "@/../public/user-page-images/recipe-sketch.jpg";
 import globeIcon from "@/../public/user-page-images/globe.svg";
@@ -14,6 +16,7 @@ import lockkIcon from "@/../public/user-page-images/lock.svg";
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -31,6 +34,7 @@ export default function ProfilePage() {
   if (!user) return <div>Завантаження профілю...</div>;
 
   const isProfileIncomplete = !user.bio || !user.avatar;
+  console.log(user);
 
   return (
     <div className={styles.profilePage}>
@@ -62,21 +66,42 @@ export default function ProfilePage() {
           </div>
           <div className={styles.bottomCenter}>
             <p className={styles.statsIteam}>
-              <span className={styles.count}>{user.published || 0}</span>{" "}
+              <span className={styles.count}>
+                {user?.stats?.published || 0}
+              </span>{" "}
               опублікованих рецептів
             </p>
-            {/*поля published не має в моделі користувача */}
           </div>
-          <Button>
+          <Button onClick={() => setIsModalOpen(true)}>
             {isProfileIncomplete ? "Заповнити профіль" : "Редагувати профіль"}
           </Button>
+
+          {isModalOpen && (
+            <EditProfileModal
+              user={user}
+              onClose={() => setIsModalOpen(false)}
+              onSave={(updatedUser) => {
+                setUser(updatedUser); // оновлює локальний стан
+                setIsModalOpen(false);
+              }}
+            />
+          )}
         </div>
       </div>
-      {/*line from shared */}
+
+      <Line />
+
       <div className={styles.container}>
         <div className={styles.cta}>
+          <Link href="/private" className={styles.buttonLink}>
+            <Button variant="secondary">
+              <Image src={lockkIcon} alt="lockkIcon" className={styles.icon} />
+              Приватні рецепти
+            </Button>
+          </Link>
+
           <Link href="/saved" className={styles.buttonLink}>
-            <Button variant="secondary" size="bigSize">
+            <Button variant="secondary">
               <Image
                 src={bookmarkIcon}
                 alt="bookmarkIcon"
@@ -85,16 +110,11 @@ export default function ProfilePage() {
               Збережені рецепти
             </Button>
           </Link>
+
           <Link href="/published" className={styles.buttonLink}>
-            <Button variant="secondary" size="bigSize">
+            <Button variant="secondary">
               <Image src={globeIcon} alt="globeIcon" className={styles.icon} />
               Опубліковані рецепти
-            </Button>
-          </Link>
-          <Link href="/private" className={styles.buttonLink}>
-            <Button variant="secondary" size="bigSize">
-              <Image src={lockkIcon} alt="lockkIcon" className={styles.icon} />
-              Приватні рецепти
             </Button>
           </Link>
         </div>

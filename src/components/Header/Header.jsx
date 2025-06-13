@@ -6,7 +6,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
 import AuthButton from "../shared/Buttons/AuthButton";
-import AddRecipeButton from "../shared/Buttons/AddRecipeButton";
+import { AddRecipeButton } from "../shared/Buttons/AddRecipeButton";
 import ProfileNavLink from "../ProfileNavLink/ProfileNavLink";
 import styles from "./Header.module.scss";
 import Image from "next/image";

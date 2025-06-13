@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { redirect } from "next/navigation";
+import Wrapper from "@/components/shared/Wrapper/Wrapper";
 import ProfilePage from "@/components/ProfilePage/ProfilePage";
 
 export default async function ProfileRoute({ params }) {
@@ -15,5 +16,11 @@ export default async function ProfileRoute({ params }) {
     redirect("/unauthorized");
   }
 
-  return <ProfilePage user={session.user} />;
+  return (
+    <main>
+      <Wrapper>
+        <ProfilePage user={session.user} />;
+      </Wrapper>
+    </main>
+  );
 }
