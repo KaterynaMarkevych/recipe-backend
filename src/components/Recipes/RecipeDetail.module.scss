@@ -44,6 +44,10 @@
   padding: 0 10px;
   width: 100%;
 }
+.titleWrapper {
+  display: flex;
+  justify-content: space-between;
+}
 .infoContainer {
   display: flex;
   flex-direction: column;

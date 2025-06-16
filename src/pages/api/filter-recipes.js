@@ -60,14 +60,7 @@ export default async function handler(req, res) {
             },
           },
         }),
-        // ...(searchTerm && {
-        //   title: {
-        //     $regex: new RegExp(
-        //       searchTerm.replace(/[.*+?^=!:${}()|\[\]\/\\]/g, "\\$&"),
-        //       "i"
-        //     ),
-        //   },
-        // }),
+        is_published: true,
       };
       if (searchTerm) {
         const terms = searchTerm

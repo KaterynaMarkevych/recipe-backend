@@ -21,55 +21,85 @@ const Recipes = ({ initialData = {} }) => {
   );
   const [error, setError] = useState(initialData.error || null);
   const [filters, setFilters] = useState({});
+  const [page, setPage] = useState(1); // Поточна сторінка
+  const [hasMore, setHasMore] = useState(true); // Чи є ще рецепти
 
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
         setLoading(true);
-
-        // Construct query params from filters
         const queryParams = new URLSearchParams();
+
         Object.entries(filters).forEach(([key, value]) => {
-          if (value) {
-            queryParams.append(key, value);
-          }
+          if (value) queryParams.append(key, value);
         });
+
+        queryParams.append("page", 1);
+        queryParams.append("limit", 6);
 
         const response = await fetch(
           `/api/filter-recipes?${queryParams.toString()}`
         );
 
-        if (!response.ok) {
-          throw new Error("Помилка при отриманні рецептів");
-        }
+        if (!response.ok) throw new Error("Помилка при отриманні рецептів");
 
         const data = await response.json();
+
         setRecipes(data);
+        setPage(1); // Скидаємо сторінку
+        setHasMore(data.length === 6); // Якщо прийшло менше 6 — довантажувати вже нема чого
         setError(null);
       } catch (err) {
-        console.error("Error fetching recipes:", err);
-        setError("Не вдалося завантажити рецепти. Спробуйте пізніше.");
+        setError("Не вдалося завантажити рецепти.");
       } finally {
         setLoading(false);
       }
     };
 
-    // Only fetch if we have filters or don't have initial data
-    if (
-      Object.keys(filters).length > 0 ||
-      (!initialData.recipes && !initialData.error)
-    ) {
-      fetchRecipes();
-    }
-  }, [filters, initialData.recipes, initialData.error]);
-
+    fetchRecipes();
+  }, [filters]);
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value,
     }));
   };
+  const loadMoreRecipes = async () => {
+    try {
+      setLoading(true);
+      const nextPage = page + 1;
 
+      const queryParams = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) queryParams.append(key, value);
+      });
+
+      queryParams.append("page", nextPage);
+      queryParams.append("limit", 6);
+
+      const response = await fetch(
+        `/api/filter-recipes?${queryParams.toString()}`
+      );
+
+      if (!response.ok) throw new Error("Помилка при отриманні рецептів");
+
+      const newRecipes = await response.json();
+
+      if (newRecipes.length === 0) {
+        setHasMore(false); // Більше рецептів нема
+      } else {
+        setRecipes((prev) => [...prev, ...newRecipes]); // Додаємо до існуючих
+        setPage(nextPage); // Зберігаємо нову сторінку
+      }
+
+      setError(null);
+    } catch (err) {
+      console.error("Error loading more recipes:", err);
+      setError("Не вдалося завантажити більше рецептів.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Wrapper>
       <section>
@@ -104,6 +134,16 @@ const Recipes = ({ initialData = {} }) => {
             </div>
           )}
         </div>
+        {!loading && hasMore && (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={loadMoreRecipes}
+              className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow"
+            >
+              Показати більше
+            </button>
+          </div>
+        )}
       </section>
     </Wrapper>
   );
