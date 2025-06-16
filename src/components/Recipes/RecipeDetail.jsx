@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ArrowLeftIcon from "../shared/ArrowLeftIcon/ArrowLeftIcon";
+import SaveRecipeButton from "../shared/Buttons/SaveRecipeButton";
+import CommentSection from "./CommentSection";
+import RecipeRating from "./RecipeRating";
 import styles from "./RecipeDetail.module.scss";
 import { ICONS } from "@/constants/icons";
 
@@ -101,8 +104,6 @@ const RecipeDetail = ({ id, initialData = {} }) => {
       </div>
     );
   }
-  console.log(recipe);
-  console.log(recipe.steps);
 
   const [author, setAuthor] = useState(null); // Стейт для користувача
   const [authorLoading, setAuthorLoading] = useState(false);
@@ -131,6 +132,8 @@ const RecipeDetail = ({ id, initialData = {} }) => {
       fetchUser(recipe.author);
     }
   }, [recipe]);
+
+  const [rating, setRating] = useState(recipe.rating || 0);
 
   return (
     <div className="container mx-auto px-4 pb-12">
@@ -184,7 +187,10 @@ const RecipeDetail = ({ id, initialData = {} }) => {
           </div>
 
           <div className={styles.infoWrapper}>
-            <h2 className="text-3xl font-bold mb-4">{recipe.title}</h2>
+            <div className={styles.titleWrapper}>
+              <h2 className="text-3xl font-bold mb-4">{recipe.title}</h2>
+              <SaveRecipeButton recipeId={recipe._id} />
+            </div>
             <div className={styles.infoContainer}>
               <p className={styles.infoItem}>
                 Тип страви:
@@ -275,11 +281,16 @@ const RecipeDetail = ({ id, initialData = {} }) => {
                 <div>
                   <p className={styles.titles}>Рейтинг</p>
                   <p className="font-medium text-base md:text-lg lg:text-xl">
-                    {recipe.rating?.toFixed(1) || "0.0"}
+                    {rating.toFixed(1)}
                   </p>
                 </div>
               </div>
             </div>
+            <RecipeRating
+              recipeId={recipe._id}
+              initialRating={recipe.rating}
+              onRatingChange={setRating}
+            />
           </div>
         </div>
 
@@ -363,6 +374,7 @@ const RecipeDetail = ({ id, initialData = {} }) => {
           </ol>
         </div>
       </div>
+      <CommentSection recipeId={recipe._id} />
     </div>
   );
 };

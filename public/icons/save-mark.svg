@@ -1,0 +1,7 @@
+<!-- save.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <path
+    d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5v16.14a.3.3 0 0 1-.46.25L12 17.25l-5.54 3.64a.3.3 0 0 1-.46-.25V4.5Z"
+    stroke="#374151" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+  />
+</svg>
