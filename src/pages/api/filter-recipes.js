@@ -46,17 +46,12 @@ export default async function handler(req, res) {
           },
         }),
         ...(excludeIngredients && {
-          ingredients: {
+          "ingredients.name": {
             $not: {
-              $elemMatch: {
-                $regex: new RegExp(
-                  excludeIngredients
-                    .split(",")
-                    .map((ing) => ing.trim())
-                    .join("|"),
-                  "i"
-                ),
-              },
+              $in: excludeIngredients
+                .split(/[,\s]+/) // розділяє і за комами, і за пробілами
+                .filter(Boolean)
+                .map((ing) => new RegExp(ing.trim(), "i")),
             },
           },
         }),

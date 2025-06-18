@@ -135,10 +135,13 @@ const Recipes = ({ initialData = {} }) => {
           )}
         </div>
         {!loading && hasMore && (
-          <div className="flex justify-center mt-8">
+          <div className="flex justify-flext-start mb-8 ml-4">
             <button
               onClick={loadMoreRecipes}
-              className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow"
+              className="px-6 py-2 text-black  rounded-lg shadow"
+              style={{
+                backgroundColor: "#b9d7ea",
+              }}
             >
               Показати більше
             </button>

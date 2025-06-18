@@ -157,6 +157,20 @@ const FilterSection = ({ onFilterChange }) => {
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Пошук рецептів без
+          </label>
+          <input
+            type="text"
+            placeholder="Введіть інгредієнти"
+            value={filters.excludeIngredients || ""}
+            onChange={(e) =>
+              handleFilterChange("excludeIngredients", e.target.value || null)
+            }
+            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+        </div>
       </div>
 
       {/* Дієтичні особливості */}
