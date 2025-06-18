@@ -93,14 +93,14 @@ export default function ProfilePage() {
 
       <div className={styles.container}>
         <div className={styles.cta}>
-          <Link href="/private" className={styles.buttonLink}>
+          <Link href="/private-recipes" className={styles.buttonLink}>
             <Button variant="secondary">
               <Image src={lockkIcon} alt="lockkIcon" className={styles.icon} />
               Приватні рецепти
             </Button>
           </Link>
 
-          <Link href="/saved" className={styles.buttonLink}>
+          <Link href="/saved-recipes" className={styles.buttonLink}>
             <Button variant="secondary">
               <Image
                 src={bookmarkIcon}
@@ -111,7 +111,7 @@ export default function ProfilePage() {
             </Button>
           </Link>
 
-          <Link href="/published" className={styles.buttonLink}>
+          <Link href="/published-recipes" className={styles.buttonLink}>
             <Button variant="secondary">
               <Image src={globeIcon} alt="globeIcon" className={styles.icon} />
               Опубліковані рецепти

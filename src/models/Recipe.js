@@ -15,7 +15,7 @@ const ratingSchema = new mongoose.Schema(
     },
   },
   { _id: false }
-); // ОЦЕЙ МОМЕНТ
+);
 
 const RecipeSchema = new mongoose.Schema({
   title: { type: String, required: true },
