@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { uploadToCloudinary } from "@/scripts/uploadToCloudinary";
@@ -56,23 +56,33 @@ const cuisine = [
   "Африканська",
   "Ефіопська",
 ];
-export default function AddRecipeModal() {
+export default function AddRecipeModal({
+  initialData = null,
+  onSubmit,
+  isEditMode = false,
+  id,
+}) {
+  console.log("id in AddRecipeModal:", id);
   const { data: session } = useSession();
-  const [formData, setFormData] = useState({
-    title: "",
-    image: "",
-    description: "",
-    ingredients: [{ quantity: "", unit: "", name: "" }],
-    steps: [""],
-    type: "",
-    cuisine: "",
-    diet: [],
-    cookingTime: "",
-    difficulty: "",
-    nutrition: { calories: "", protein: "", fats: "", carbs: "" },
-    servings: "",
-    author: session?.user?.id,
-  });
+  const [formData, setFormData] = useState(() =>
+    initialData
+      ? { ...initialData, author: initialData.author || session?.user?.id }
+      : {
+          title: "",
+          image: "",
+          description: "",
+          ingredients: [{ quantity: "", unit: "", name: "" }],
+          steps: [""],
+          type: "",
+          cuisine: "",
+          diet: [],
+          cookingTime: "",
+          difficulty: "",
+          nutrition: { calories: "", protein: "", fats: "", carbs: "" },
+          servings: "",
+          author: session?.user?.id,
+        }
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -184,22 +194,28 @@ export default function AddRecipeModal() {
 
       const recipeData = {
         ...formData,
-        image: imageUrl, // Додаємо посилання на зображення
+        image: imageUrl, // Залишаємо старе зображення, якщо нове не завантажено
         author: session?.user?.id,
       };
 
-      await axios.post("/api/recipes", recipeData);
+      if (onSubmit) {
+        await onSubmit(recipeData); // Винесена логіка в зовнішній компонент
+      } else {
+        await axios.post("/api/recipes", recipeData);
+      }
 
       console.log(recipeData);
 
       setSuccessMessage("Рецепт успішно опубліковано!");
-      setTimeout(() => {
-        if (session?.user?.id) {
-          window.location.href = `/profile/${session.user.id}`;
-        } else {
-          window.location.href = `/`;
-        }
-      }, 1500);
+      if (!isEditMode) {
+        setTimeout(() => {
+          if (session?.user?.id) {
+            window.location.href = `/profile/${session.user.id}`;
+          } else {
+            window.location.href = `/`;
+          }
+        }, 1500);
+      }
     } catch (error) {
       console.error("Помилка при надсиланні рецепта:", error);
       const errorMessage =
@@ -207,6 +223,12 @@ export default function AddRecipeModal() {
       alert("Помилка: " + errorMessage);
     }
   };
+
+  useEffect(() => {
+    if (initialData?.image) {
+      setImagePreview(initialData.image);
+    }
+  }, [initialData]);
 
   const handleAddIngredient = () => {
     setFormData((prev) => ({
@@ -229,7 +251,7 @@ export default function AddRecipeModal() {
     }));
   };
 
-  const handleSaveDraft = async () => {
+  const handleSave = async () => {
     if (formData.ingredients.length === 0) {
       alert("Будь ласка, додайте хоча б один інгредієнт.");
       return;
@@ -250,18 +272,33 @@ export default function AddRecipeModal() {
       imageUrl = await uploadToCloudinary(imageFile);
     }
 
-    const draftData = {
+    const dataToSave = {
       ...formData,
       image: imageUrl,
       is_published: false,
       author: session?.user?.id,
     };
-    console.log("Автор рецепта:", session?.user?.id);
+
     try {
-      await axios.post("/api/recipes", draftData);
-      setSuccessMessage("Рецепт збережено як чернетку!");
+      if (isEditMode) {
+        // При редагуванні робимо PUT за ID рецепта
+        const recipeId = formData.id || formData._id;
+        if (!recipeId) {
+          alert("Не знайдено id рецепта для редагування!");
+          return;
+        }
+        await axios.put(`/api/recipes/${id}`, dataToSave);
+        setSuccessMessage("Рецепт оновлено!");
+      } else {
+        // При створенні нового рецепта робимо POST
+        await axios.post("/api/recipes", dataToSave);
+        setSuccessMessage("Рецепт збережено як чернетку!");
+      }
+
       setTimeout(() => {
-        if (session?.user?.id) {
+        if (isEditMode) {
+          window.location.href = `/private-recipes`;
+        } else if (session?.user?.id) {
           window.location.href = `/profile/${session.user.id}`;
         } else {
           window.location.href = `/`;
@@ -275,7 +312,9 @@ export default function AddRecipeModal() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.header}>Додати рецепт</h1>
+      <h1 className={styles.header}>
+        {isEditMode ? "Редагувати рецепт" : "Додати рецепт"}
+      </h1>
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"
@@ -534,10 +573,16 @@ export default function AddRecipeModal() {
           <Button
             variant="third"
             type="button"
-            onClick={handleSaveDraft}
+            onClick={handleSave}
             disabled={isSavingDraft}
           >
-            {isSavingDraft ? "Збереження..." : "Зберегти рецепт"}
+            {isSavingDraft
+              ? isEditMode
+                ? "Редагування..."
+                : "Збереження..."
+              : isEditMode
+              ? "Редагувати"
+              : "Зберегти рецепт"}
           </Button>
 
           <Button variant="third" type="submit" disabled={isPublishing}>

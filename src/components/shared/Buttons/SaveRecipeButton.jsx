@@ -12,7 +12,13 @@ export default function SaveRecipeButton({ recipeId }) {
       if (!session) return;
       try {
         const res = await axios.get("/api/profile/getSavedRecipes");
-        setIsSaved(res.data.savedRecipeIds.includes(recipeId));
+        const savedIds = res.data.savedRecipeIds;
+        if (Array.isArray(savedIds)) {
+          setIsSaved(savedIds.includes(recipeId));
+        } else {
+          console.warn("savedRecipeIds не є масивом:", savedIds);
+          setIsSaved(false);
+        }
       } catch (error) {
         console.error("Помилка при перевірці збережених рецептів:", error);
       }

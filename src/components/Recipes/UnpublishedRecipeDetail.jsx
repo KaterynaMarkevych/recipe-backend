@@ -1,152 +1,68 @@
+// components/Recipes/UnpublishedRecipeDetail.jsx
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import ArrowLeftIcon from "../shared/ArrowLeftIcon/ArrowLeftIcon";
-import SaveRecipeButton from "../shared/Buttons/SaveRecipeButton";
-import CommentSection from "./CommentSection";
-import RecipeRating from "./RecipeRating";
+import Link from "next/link";
 import styles from "./RecipeDetail.module.scss";
 import { ICONS } from "@/constants/icons";
+import Button from "../shared/Buttons/Button";
 
-// Define colors for difficulty badges outside the component
 const difficultyColors = {
   Легко: "bg-green-100 text-green-800",
   Середньо: "bg-yellow-100 text-yellow-800",
   Складно: "bg-red-100 text-red-800",
 };
 
-const RecipeDetail = ({ id, initialData = {} }) => {
-  const [recipe, setRecipe] = useState(initialData.recipe || null);
-  const [loading, setLoading] = useState(
-    !initialData.recipe && !initialData.error
-  );
-  const [error, setError] = useState(initialData.error || null);
+const UnpublishedRecipeDetail = ({ recipe }) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
+  const [successMessage, setSuccessMessage] = useState("");
 
-  useEffect(() => {
-    // Only fetch data if we don't have initial data
-    if (!initialData.recipe && !initialData.error && id) {
-      const fetchRecipe = async () => {
-        try {
-          setLoading(true);
-          const response = await fetch(`/api/recipes/${id}`);
+  const handlePublish = async () => {
+    setLoading(true);
+    setSuccessMessage("");
 
-          if (!response.ok) {
-            throw new Error("Не вдалося завантажити рецепт");
-          }
-
-          const data = await response.json();
-          setRecipe(data);
-          setError(null);
-        } catch (err) {
-          console.error("Error fetching recipe:", err);
-          setError("Не вдалося завантажити рецепт. Спробуйте пізніше.");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchRecipe();
+    const res = await fetch(`/api/recipes/${recipe._id}`, {
+      method: "PATCH",
+    });
+    if (res.ok) {
+      router.refresh(); // reload page to reflect published state
     }
-  }, [id, initialData.recipe, initialData.error]);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="container mx-auto px-4 py-12">
-        <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center"
-          role="alert"
-        >
-          <span className="block sm:inline">{error}</span>
-        </div>
-        <div className="mt-4 text-center">
-          <Link
-            href="/recipes"
-            className="text-blue-600 hover:text-blue-800 transition-colors"
-            tabIndex="0"
-            aria-label="Повернутися до всіх рецептів"
-          >
-            ← Повернутися до всіх рецептів
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (!recipe) {
-    return (
-      <div className="container mx-auto px-4 py-12 text-center">
-        <div
-          className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative"
-          role="alert"
-        >
-          <span className="block sm:inline">Рецепт не знайдено</span>
-        </div>
-        <div className="mt-4">
-          <Link
-            href="/recipes"
-            className="text-blue-600 hover:text-blue-800 transition-colors"
-            tabIndex="0"
-            aria-label="Повернутися до всіх рецептів"
-          >
-            ← Повернутися до всіх рецептів
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  const [author, setAuthor] = useState(null); // Стейт для користувача
-  const [authorLoading, setAuthorLoading] = useState(false);
-  const [authorError, setAuthorError] = useState(null);
-  // Функція для отримання даних користувача
-  const fetchUser = async (userId) => {
-    try {
-      setAuthorLoading(true);
-      const response = await fetch(`/api/users/${userId}`);
-      if (!response.ok) {
-        throw new Error("Не вдалося завантажити користувача");
+    setLoading(false);
+    setSuccessMessage("Рецепт успішно опубліковано!");
+    setTimeout(() => {
+      if (session?.user?.id) {
+        window.location.href = `/profile/${session.user.id}`;
+      } else {
+        window.location.href = `/`;
       }
-      const user = await response.json();
-      setAuthor(user);
-      setAuthorError(null);
-    } catch (err) {
-      console.error("Error fetching user:", err);
-      setAuthorError("Не вдалося завантажити користувача");
-    } finally {
-      setAuthorLoading(false);
-    }
+    }, 1500);
   };
 
-  useEffect(() => {
-    if (recipe?.author) {
-      fetchUser(recipe.author);
-    }
-  }, [recipe]);
+  const handleDelete = async () => {
+    const confirmed = confirm("Ви дійсно хочете видалити рецепт?");
+    if (!confirmed) return;
 
-  const [rating, setRating] = useState(recipe.rating || 0);
+    setLoading(true);
+    const res = await fetch(`/api/recipes/${recipe._id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      router.push("/private-recipes");
+    } else {
+      alert("Помилка при видаленні рецепта.");
+    }
+
+    setLoading(false);
+  };
 
   return (
     <div className="container mx-auto px-4 pb-12">
-      <Link
-        href="/recipes"
-        className="inline-flex items-center text-blue-400 hover:text-blue-600 transition-colors mb-6"
-        tabIndex="0"
-        aria-label="Повернутися до всіх рецептів"
-      >
-        <ArrowLeftIcon />
-        Повернутися до всіх рецептів
-      </Link>
-
       <div className={styles.container}>
         <div className="md:flex">
           <div className={styles.imagesContainer}>
@@ -166,30 +82,11 @@ const RecipeDetail = ({ id, initialData = {} }) => {
                 <span className="text-gray-400 text-lg">Немає зображення</span>
               </div>
             )}
-
-            <div className={styles.userWrapper}>
-              {authorLoading && <p>Завантаження користувача...</p>}
-              {authorError && <p>{authorError}</p>}
-              {author && (
-                <Link
-                  href={`/user/${author._id}`}
-                  className={styles.userContainer}
-                >
-                  <img
-                    src={author.avatar}
-                    alt={author.username}
-                    className={styles.userAvatar}
-                  />
-                  <p className={styles.userName}>{author.username}</p>
-                </Link>
-              )}
-            </div>
           </div>
 
           <div className={styles.infoWrapper}>
             <div className={styles.titleWrapper}>
               <h2 className="text-3xl font-bold mb-4">{recipe.title}</h2>
-              <SaveRecipeButton recipeId={recipe._id} />
             </div>
             <div className={styles.infoContainer}>
               <p className={styles.infoItem}>
@@ -281,16 +178,11 @@ const RecipeDetail = ({ id, initialData = {} }) => {
                 <div>
                   <p className={styles.titles}>Рейтинг</p>
                   <p className="font-medium text-base md:text-lg lg:text-xl">
-                    {rating.toFixed(1)}
+                    0
                   </p>
                 </div>
               </div>
             </div>
-            <RecipeRating
-              recipeId={recipe._id}
-              initialRating={recipe.rating}
-              onRatingChange={setRating}
-            />
           </div>
         </div>
 
@@ -374,9 +266,25 @@ const RecipeDetail = ({ id, initialData = {} }) => {
           </ol>
         </div>
       </div>
-      <CommentSection recipeId={recipe._id} />
+
+      <div className="flex  justify-center gap-3 mb-8">
+        <Button>
+          <Link href={`/private-recipes/${recipe._id}/edit`}>Редагувати</Link>
+        </Button>
+
+        <Button onClick={handlePublish} disabled={loading}>
+          Опублікувати
+        </Button>
+
+        <Button onClick={handleDelete} disabled={loading}>
+          Видалити
+        </Button>
+      </div>
+      {successMessage && (
+        <div className={styles.successMessage}>{successMessage}</div>
+      )}
     </div>
   );
 };
 
-export default RecipeDetail;
+export default UnpublishedRecipeDetail;
