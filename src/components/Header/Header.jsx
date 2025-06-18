@@ -30,18 +30,15 @@ const Header = () => {
     };
   }, []);
 
-  //const [includeIngredients, setIncludeIngredients] = useState("");
-  // const handleSearch = () => {
-  //   if (includeIngredients) {
-  //     const formattedIngredients = includeIngredients.replace(/\s+/g, ",");
-  //     router.push(`/recipes?includeIngredients=${formattedIngredients}`);
-  //   }
-  // };
-
-  // const handleKeyPress = (e) => {
-  //   if (e.key === "Enter") handleSearch();
-  // };
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      router.push(
+        `/search-recipe?searchTerm=${encodeURIComponent(searchTerm.trim())}`
+      );
+      setIsMenuOpen(false); // якщо мобільне меню було відкрите
+    }
+  };
   return (
     <header
       className={classNames(styles.header, {
@@ -61,8 +58,15 @@ const Header = () => {
               type="text"
               placeholder='"борошно, яйця" або "шарлотка"'
               className={styles.searchField}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
             />
-            <button className={styles.searchButton}>
+            <button className={styles.searchButton} onClick={handleSearch}>
               <FontAwesomeIcon icon={faSearch} />
             </button>
             <div className={styles.CTA}>
