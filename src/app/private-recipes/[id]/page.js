@@ -14,7 +14,11 @@ export default async function UnpublishedRecipePage({ params }) {
     redirect("/login");
   }
 
-  const { id } = await params;
+  const awaitedParams = await params; // Ось тут важливо
+
+  if (awaitedParams.id !== session.user.id) {
+    redirect("/unauthorized");
+  }
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return (
