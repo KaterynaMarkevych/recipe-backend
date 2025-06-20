@@ -3,7 +3,7 @@ import Recipe from "../../models/Recipe";
 import Wrapper from "@/components/shared/Wrapper/Wrapper";
 import UnpublishedRecipeCard from "@/components/Recipes/UnpublishedRecipeCard";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { authOptions } from "@/lib/auth";
 
 async function getUserUnpublishedRecipes(userId) {
   try {

@@ -1,11 +1,9 @@
-// pages/api/recipes/[id].js
-
 import { connectToDatabase } from "../../../lib/mongodb";
 import Recipe from "../../../models/Recipe";
 import { runCors } from "../../../lib/cors";
 import mongoose from "mongoose";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
+import { authOptions } from "@/lib/auth";
 
 export default async function handler(req, res) {
   runCors(req, res, async () => {
