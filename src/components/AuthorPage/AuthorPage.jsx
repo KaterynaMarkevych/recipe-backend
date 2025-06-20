@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Button from "../shared/Buttons/Button";
+import SubscribeButton from "../shared/Buttons/SubscribeButton";
 import RecipeCard from "../Recipes/RecipeCard";
+import SavedRecipesSection from "./SavedRecipesSection";
 import styles from "./AuthorPage.module.scss";
 
 const AuthorPage = ({ id, initialData = {} }) => {
@@ -121,6 +122,29 @@ const AuthorPage = ({ id, initialData = {} }) => {
       fetchRecipes(user._id);
     }
   }, [user]);
+
+  const [currentUser, setCurrentUser] = useState(user);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  // Завантаження статусу підписки
+  useEffect(() => {
+    if (!user) return;
+
+    const checkSubscription = async () => {
+      try {
+        const res = await fetch(
+          `/api/users/subscribe?targetUserId=${user._id}`
+        );
+        if (!res.ok) throw new Error("Не вдалося перевірити підписку");
+        const data = await res.json();
+        setIsSubscribed(data.isSubscribed);
+      } catch (e) {
+        setIsSubscribed(false);
+      }
+    };
+    checkSubscription();
+  }, [user]);
+
   return (
     <div className={styles.container}>
       <div className={styles.userInfo}>
@@ -140,7 +164,8 @@ const AuthorPage = ({ id, initialData = {} }) => {
           <div className={styles.topRow}>
             <p className={styles.stats}>
               {" "}
-              <span className={styles.count}>{user.followers}</span> підписників
+              <span className={styles.count}>{currentUser.followers}</span>{" "}
+              підписників
             </p>
             <p className={styles.stats}>
               {" "}
@@ -152,7 +177,18 @@ const AuthorPage = ({ id, initialData = {} }) => {
             рецептів
           </p>
           <div className={styles.buttonContainer}>
-            <Button>Підписатися</Button>
+            <SubscribeButton
+              targetUserId={user._id}
+              onSubscriptionChange={() => {
+                // Повторне завантаження актуального юзера
+                fetch(`/api/users/${id}`)
+                  .then((res) => res.json())
+                  .then((data) => {
+                    setUser(data);
+                    setCurrentUser(data);
+                  });
+              }}
+            />
           </div>
         </div>
       </div>
@@ -173,6 +209,14 @@ const AuthorPage = ({ id, initialData = {} }) => {
           <p>Користувач ще не додав жодного рецепта.</p>
         )}
       </div>
+      {/* Показуємо SavedRecipesSection тільки якщо підписані */}
+      {isSubscribed ? (
+        <SavedRecipesSection authorId={user._id} />
+      ) : (
+        <p className="text-gray-400 mt-8 text-center">
+          Підпишіться на користувача, аби бачити його збережені рецепти
+        </p>
+      )}
     </div>
   );
 };

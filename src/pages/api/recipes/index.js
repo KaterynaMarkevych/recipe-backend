@@ -11,7 +11,6 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     try {
-      console.log("Тіло запиту:", req.body);
       if (!session) {
         return res.status(401).json({ message: "Неавторизований доступ" });
       }

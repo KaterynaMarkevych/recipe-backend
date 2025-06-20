@@ -45,7 +45,7 @@ export default function EditRecipePage(props) {
       alert("Не вдалося оновити рецепт.");
     }
   };
-  console.log("EditRecipePage params:", params);
+
   if (loading) return <p>Завантаження рецепта...</p>;
   if (error) return <p>{error}</p>;
 

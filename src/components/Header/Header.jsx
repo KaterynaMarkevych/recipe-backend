@@ -84,12 +84,12 @@ const Header = () => {
             >
               <ul className={styles.navList}>
                 <li>
-                  <a href="/national_cuisine" className={styles.link}>
-                    Національна кухня
+                  <a href="/recipes" className={styles.link}>
+                    Рецепти
                   </a>
                 </li>
                 <li>
-                  <a href="/cook_type" className={styles.link}>
+                  <a href="/cook-type" className={styles.link}>
                     Тип кухні
                   </a>
                 </li>
