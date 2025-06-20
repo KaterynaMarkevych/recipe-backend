@@ -3,23 +3,22 @@ import Recipe from "@/models/Recipe";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import mongoose from "mongoose";
-import { redirect } from "next/navigation";
 import Wrapper from "@/components/shared/Wrapper/Wrapper";
 import UnpublishedRecipeDetail from "@/components/Recipes/UnpublishedRecipeDetail";
+import { redirect } from "next/navigation";
 
 export default async function UnpublishedRecipePage({ params }) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
+    // Якщо не авторизований - редірект на логін
     redirect("/login");
   }
 
-  const awaitedParams = await params; // Ось тут важливо
+  const awaitedParams = await params;
+  const id = awaitedParams.id;
 
-  if (awaitedParams.id !== session.user.id) {
-    redirect("/unauthorized");
-  }
-
+  // Перевірка валідності ObjectId
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return (
       <Wrapper>
