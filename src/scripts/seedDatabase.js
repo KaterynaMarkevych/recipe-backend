@@ -13,7 +13,6 @@ const MONGODB_URI = process.env.MONGODB_URI;
 const seedDatabase = async () => {
   try {
     await mongoose.connect(MONGODB_URI);
-    console.log("MongoDB підключено успішно!");
 
     await User.deleteMany({});
     await Recipe.deleteMany({});
@@ -50,8 +49,6 @@ const seedDatabase = async () => {
     }));
 
     await User.insertMany(users); //додавання в базу даних
-    console.log("Збережені користувачі:", users);
-    console.log("ID першого користувача:", users[0]?._id);
 
     const recipes = [
       {
@@ -605,18 +602,11 @@ const seedDatabase = async () => {
     ];
 
     await Recipe.insertMany(recipes);
-    console.log("Рецепти додані успішно!");
 
     // Виведення даних у консоль
     const allUsers = await User.find();
-    console.log("==== Усі користувачі ====");
-    console.log(allUsers);
 
     const allRecipes = await Recipe.find();
-    console.log("==== Усі рецепти ====");
-    console.log(allRecipes);
-
-    console.log("Дані успішно додані до бази!");
   } catch (error) {
     console.error("Помилка при заповненні бази:", error);
   } finally {

@@ -62,7 +62,6 @@ export default function AddRecipeModal({
   isEditMode = false,
   id,
 }) {
-  console.log("id in AddRecipeModal:", id);
   const { data: session } = useSession();
   const [formData, setFormData] = useState(() =>
     initialData
@@ -203,8 +202,6 @@ export default function AddRecipeModal({
       } else {
         await axios.post("/api/recipes", recipeData);
       }
-
-      console.log(recipeData);
 
       setSuccessMessage("Рецепт успішно опубліковано!");
       if (!isEditMode) {

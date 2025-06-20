@@ -94,7 +94,6 @@ const RegisterForm = ({ onBack }) => {
       };
 
       const response = await axios.post("/api/auth/register", registrationData);
-      console.log("Response from /register:", response.data);
 
       if (response.data && (response.data.user?.id || response.data.id)) {
         const res = await signIn("credentials", {

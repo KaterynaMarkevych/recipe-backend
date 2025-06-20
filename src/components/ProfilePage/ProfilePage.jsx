@@ -34,7 +34,6 @@ export default function ProfilePage() {
   if (!user) return <div>Завантаження профілю...</div>;
 
   const isProfileIncomplete = !user.bio || !user.avatar;
-  console.log(user);
 
   return (
     <div className={styles.profilePage}>
