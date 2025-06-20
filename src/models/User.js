@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
   followers: { type: Number, default: 0 },
   following: { type: Number, default: 0 },
   savedRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Recipe" }],
+  subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   createdAt: { type: Date, default: Date.now },
 });
 
