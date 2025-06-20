@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { connectToDatabase } from "../../../lib/mongodb";
 import Recipe from "../../../models/Recipe";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]";
+import { authOptions } from "@/lib/auth";
 
 export default async function handler(req, res) {
   await connectToDatabase();

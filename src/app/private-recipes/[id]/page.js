@@ -1,7 +1,7 @@
 import { connectToDatabase } from "@/lib/mongodb";
 import Recipe from "@/models/Recipe";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { authOptions } from "@/lib/auth";
 import mongoose from "mongoose";
 import { redirect } from "next/navigation";
 import Wrapper from "@/components/shared/Wrapper/Wrapper";
