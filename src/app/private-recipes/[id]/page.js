@@ -1,57 +1,75 @@
-import { connectToDatabase } from "@/lib/mongodb";
-import Recipe from "@/models/Recipe";
+import { getRecipeById } from "@/lib/recipes";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import mongoose from "mongoose";
 import Wrapper from "@/components/shared/Wrapper/Wrapper";
 import UnpublishedRecipeDetail from "@/components/Recipes/UnpublishedRecipeDetail";
 import { redirect } from "next/navigation";
 
+function serializeValue(value) {
+  if (value == null) return value;
+
+  if (Array.isArray(value)) {
+    return value.map(serializeValue);
+  }
+
+  if (typeof value === "object") {
+    // ObjectId -> рядок
+    if (
+      value._bsontype === "ObjectID" &&
+      typeof value.toString === "function"
+    ) {
+      return value.toString();
+    }
+
+    // Buffer -> base64 рядок
+    if (Buffer.isBuffer(value)) {
+      return value.toString("base64");
+    }
+
+    // Uint8Array -> base64 рядок
+    if (value instanceof Uint8Array) {
+      return Buffer.from(value).toString("base64");
+    }
+
+    // Відкидаємо всі функції і поля, які є функціями (щоб React не падав)
+    const newObj = {};
+    for (const key in value) {
+      if (typeof value[key] !== "function") {
+        newObj[key] = serializeValue(value[key]);
+      }
+    }
+    return newObj;
+  }
+
+  // Примітивні типи залишаємо як є
+  return value;
+}
+
 export default async function UnpublishedRecipePage({ params }) {
   const session = await getServerSession(authOptions);
 
+  params = await params;
   if (!session) {
-    // Якщо не авторизований - редірект на логін
     redirect("/login");
   }
 
-  const awaitedParams = await params;
-  const id = awaitedParams.id;
+  try {
+    const recipe = await getRecipeById(params.id, session.user.id);
+    const recipeObj = recipe.toObject();
+    const serializedRecipe = serializeValue(recipeObj);
 
-  // Перевірка валідності ObjectId
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return (
+      <main>
+        <Wrapper>
+          <UnpublishedRecipeDetail recipe={serializedRecipe} />
+        </Wrapper>
+      </main>
+    );
+  } catch (error) {
     return (
       <Wrapper>
-        <p className="text-red-500">Некоректний ID рецепта.</p>
+        <p className="text-red-500">{error.message}</p>
       </Wrapper>
     );
   }
-
-  await connectToDatabase();
-
-  const recipe = await Recipe.findById(id);
-
-  if (!recipe) {
-    return (
-      <Wrapper>
-        <p className="text-red-500">Рецепт не знайдено.</p>
-      </Wrapper>
-    );
-  }
-
-  if (recipe.author.toString() !== session.user.id) {
-    return (
-      <Wrapper>
-        <p className="text-red-500">У вас немає доступу до цього рецепта.</p>
-      </Wrapper>
-    );
-  }
-
-  return (
-    <main>
-      <Wrapper>
-        <UnpublishedRecipeDetail recipe={JSON.parse(JSON.stringify(recipe))} />
-      </Wrapper>
-    </main>
-  );
 }
