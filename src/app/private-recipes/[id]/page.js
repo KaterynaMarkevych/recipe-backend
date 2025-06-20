@@ -14,7 +14,7 @@ export default async function UnpublishedRecipePage({ params }) {
     redirect("/login");
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return (
