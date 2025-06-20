@@ -6,7 +6,7 @@ import ProfilePage from "@/components/ProfilePage/ProfilePage";
 
 export default async function ProfileRoute({ params }) {
   // Отримуємо параметри асинхронно
-  const { id } = await params;
+  const { id } = params;
 
   const session = await getServerSession(authOptions);
 

@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
+import Recipe from "@/models/Recipe";
 import SavedRecipesList from "@/components/Recipes/SavedRecipesList";
 import Wrapper from "@/components/shared/Wrapper/Wrapper";
 

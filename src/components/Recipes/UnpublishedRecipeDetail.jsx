@@ -268,8 +268,12 @@ const UnpublishedRecipeDetail = ({ recipe }) => {
       </div>
 
       <div className="flex  justify-center gap-3 mb-8">
-        <Button>
-          <Link href={`/private-recipes/${recipe._id}/edit`}>Редагувати</Link>
+        <Button
+          onClick={() =>
+            (window.location.href = `/private-recipes/${recipeId}/edit`)
+          }
+        >
+          Редагувати
         </Button>
 
         <Button onClick={handlePublish} disabled={loading}>

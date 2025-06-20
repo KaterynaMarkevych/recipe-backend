@@ -1,54 +1,34 @@
-import { connectToDatabase } from "@/lib/mongodb";
-import Recipe from "@/models/Recipe";
+import { getRecipeById } from "@/lib/recipes";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import mongoose from "mongoose";
-import { redirect } from "next/navigation";
 import Wrapper from "@/components/shared/Wrapper/Wrapper";
 import UnpublishedRecipeDetail from "@/components/Recipes/UnpublishedRecipeDetail";
+import { redirect } from "next/navigation";
 
 export default async function UnpublishedRecipePage({ params }) {
   const session = await getServerSession(authOptions);
 
+  params = await params;
   if (!session) {
     redirect("/login");
   }
 
-  const { id } = await params;
+  try {
+    const recipe = await getRecipeById(params.id, session.user.id);
+    const plainRecipe = JSON.parse(JSON.stringify(recipe));
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return (
+      <main>
+        <Wrapper>
+          <UnpublishedRecipeDetail recipe={plainRecipe} />
+        </Wrapper>
+      </main>
+    );
+  } catch (error) {
     return (
       <Wrapper>
-        <p className="text-red-500">Некоректний ID рецепта.</p>
+        <p className="text-red-500">{error.message}</p>
       </Wrapper>
     );
   }
-
-  await connectToDatabase();
-
-  const recipe = await Recipe.findById(id);
-
-  if (!recipe) {
-    return (
-      <Wrapper>
-        <p className="text-red-500">Рецепт не знайдено.</p>
-      </Wrapper>
-    );
-  }
-
-  if (recipe.author.toString() !== session.user.id) {
-    return (
-      <Wrapper>
-        <p className="text-red-500">У вас немає доступу до цього рецепта.</p>
-      </Wrapper>
-    );
-  }
-
-  return (
-    <main>
-      <Wrapper>
-        <UnpublishedRecipeDetail recipe={JSON.parse(JSON.stringify(recipe))} />
-      </Wrapper>
-    </main>
-  );
 }
